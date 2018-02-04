@@ -1,9 +1,43 @@
 lindsayluwho/VoteKnockerApp:
-  Build:
-    - npm install
+  # Distelli Manifest example
+  # this example assumes the build and deploy servers are:
+  # Ubuntu 14.04
+
+  PreRelease:
+    - echo "---Beginning PreRelease---"
+    - echo "--Installing build dependencies--"
+    - echo "-Updating apt-get-"
+    - sudo yum -y update
+    - echo "-Installing nodejs-"
+    - sudo yum -y install nodejs
+    - echo "-Installing npm-"
+    - sudo yum -y install npm
+    - echo "--Building--"
+    - sudo npm install
+
+
   PkgInclude:
     - '*'
+
+  PkgExclude:
+    - node_modules/
+
+  PreInstall:
+    - echo "---Begining PreInstall---"
+    - echo "--Installing deploy dependencies--"
+    - echo "-Updating apt-get-"
+    - sudo yum -y update
+    - echo "-Installing nodejs-"
+    - sudo yum -y install nodejs
+    - echo "-Installing npm-"
+    - sudo yum -y install npm
+
+  PostInstall:
+    - echo "Begin PostInstall"
+    - npm install
+    
   Env:
-    - PORT: "8080"
+    - PORT: 8080
+    
   Exec:
-    - node server.js
+    - /usr/bin/nodejs server.js
