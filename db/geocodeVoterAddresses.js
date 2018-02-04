@@ -22,40 +22,40 @@ connection.connect(function(err) {
 });
 
 //adds a column to the AlphaVoters table to contain geocoordinates
-function createLongLat() {
-  console.log("Inserting a new column to AlphaVoters...\n");
-  var query = connection.query(
-    "ALTER TABLE AlphaVoters ADD longLat VARCHAR",
-    function(err, res) {
-      console.log(" Column insterted!\n");
-      // Call update Zips AFTER the ADD completes
-      updateZips();
-    }
-  );
+// function createLongLat() {
+//   console.log("Inserting a new column to AlphaVoters...\n");
+//   var query = connection.query(
+//     "ALTER TABLE AlphaVoters ADD longLat VARCHAR",
+//     function(err, res) {
+//       console.log(" Column insterted!\n");
+//       // Call update Zips AFTER the ADD completes
+//       updateZips();
+//     }
+//   );
 
-  // logs the actual query being run
-  console.log(query.sql);
-};
+//   // logs the actual query being run
+//   console.log(query.sql);
+// };
 
-//concatenates existing zips with a 0 because NJ zips all start with 0s but the originating CSV files removed them. This makes it so the geocoder recognizes the zips when geocoding.
-function updateZips() {
-  console.log("Updating all Zipcodes...\n");
-  var query = connection.query(
-    "SELECT CONCAT(0, zip) AS zip FROM AlphaVoters",
-    function(err, res) {
-    	if (err){
-    		console.log(err);
-    	}
-      console.log("Zipcodes are updated!\n");
+// //concatenates existing zips with a 0 because NJ zips all start with 0s but the originating CSV files removed them. This makes it so the geocoder recognizes the zips when geocoding.
+// function updateZips() {
+//   console.log("Updating all Zipcodes...\n");
+//   var query = connection.query(
+//     "SELECT CONCAT(0, zip) AS zip FROM AlphaVoters",
+//     function(err, res) {
+//     	if (err){
+//     		console.log(err);
+//     	}
+//       console.log("Zipcodes are updated!\n");
       
-      //Geocode the full addresses AFTER the Zips are updated
-      // geocodeAddresses();
-    }
-  );
+//       //Geocode the full addresses AFTER the Zips are updated
+//       // geocodeAddresses();
+//     }
+//   );
 
-  // logs the actual query being run
-  console.log(query.sql);
-};
+//   // logs the actual query being run
+//   console.log(query.sql);
+// };
 
 
 //Gets and concatenates address fields from AlphaVoters table and passes them through Geocoder to get geocoordinates
