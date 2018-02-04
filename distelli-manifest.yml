@@ -1,4 +1,4 @@
-jdoe/example-node:
+lindsayluwho/VoteKnockerApp:
   Build:
     - npm install
   PkgInclude:
