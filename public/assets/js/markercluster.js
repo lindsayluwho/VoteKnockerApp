@@ -1,9 +1,3 @@
-
-// ==ClosureCompiler==
-// @compilation_level ADVANCED_OPTIMIZATIONS
-// @externs_url http://closure-compiler.googlecode.com/svn/trunk/contrib/externs/maps/google_maps_api_v3_3.js
-// ==/ClosureCompiler==
-
 /**
  * @name MarkerClusterer for Google Maps v3
  * @version version 1.0.1
@@ -44,13 +38,6 @@
  *                cluster.
  *     'zoomOnClick': (boolean) Whether the default behaviour of clicking on a
  *                    cluster is to zoom into it.
- *     'imagePath': (string) The base URL where the images representing
- *                  clusters will be found. The full URL will be:
- *                  {imagePath}[1-5].{imageExtension}
- *                  Default: '../images/m'.
- *     'imageExtension': (string) The suffix for images URL representing
- *                       clusters will be found. See _imagePath_ for details.
- *                       Default: 'png'.
  *     'averageCenter': (boolean) Whether the center of each cluster should be
  *                      the average of all markers in the cluster.
  *     'minimumClusterSize': (number) The minimum number of markers to be in a
@@ -199,7 +186,7 @@ function MarkerClusterer(map, opt_markers, opt_options) {
  * @type {string}
  * @private
  */
-MarkerClusterer.prototype.MARKER_CLUSTER_IMAGE_PATH_ = '../images/m';
+MarkerClusterer.prototype.MARKER_CLUSTER_IMAGE_PATH_ = '../img/m';
 
 
 /**
@@ -520,12 +507,9 @@ MarkerClusterer.prototype.removeMarker = function(marker, opt_nodraw) {
  * @param {boolean=} opt_nodraw Optional boolean to force no redraw.
  */
 MarkerClusterer.prototype.removeMarkers = function(markers, opt_nodraw) {
-  // create a local copy of markers if required
-  // (removeMarker_ modifies the getMarkers() array in place)
-  var markersCopy = markers === this.getMarkers() ? markers.slice() : markers;
   var removed = false;
 
-  for (var i = 0, marker; marker = markersCopy[i]; i++) {
+  for (var i = 0, marker; marker = markers[i]; i++) {
     var r = this.removeMarker_(marker);
     removed = removed || r;
   }
@@ -936,9 +920,9 @@ Cluster.prototype.remove = function() {
 
 
 /**
- * Returns the number of markers in the cluster.
+ * Returns the center of the cluster.
  *
- * @return {number} The number of markers in the cluster.
+ * @return {number} The cluster center.
  */
 Cluster.prototype.getSize = function() {
   return this.markers_.length;
@@ -946,9 +930,9 @@ Cluster.prototype.getSize = function() {
 
 
 /**
- * Returns a list of the markers in the cluster.
+ * Returns the center of the cluster.
  *
- * @return {Array.<google.maps.Marker>} The markers in the cluster.
+ * @return {Array.<google.maps.Marker>} The cluster center.
  */
 Cluster.prototype.getMarkers = function() {
   return this.markers_;
@@ -1066,7 +1050,7 @@ ClusterIcon.prototype.triggerClusterClick = function() {
   var markerClusterer = this.cluster_.getMarkerClusterer();
 
   // Trigger the clusterclick event.
-  google.maps.event.trigger(markerClusterer.map_, 'clusterclick', this.cluster_);
+  google.maps.event.trigger(markerClusterer, 'clusterclick', this.cluster_);
 
   if (markerClusterer.isZoomOnClick()) {
     // Zoom into the cluster.
@@ -1256,64 +1240,4 @@ ClusterIcon.prototype.createCss = function(pos) {
       pos.x + 'px; color:' + txtColor + '; position:absolute; font-size:' +
       txtSize + 'px; font-family:Arial,sans-serif; font-weight:bold');
   return style.join('');
-};
-
-
-// Export Symbols for Closure
-// If you are not going to compile with closure then you can remove the
-// code below.
-window['MarkerClusterer'] = MarkerClusterer;
-MarkerClusterer.prototype['addMarker'] = MarkerClusterer.prototype.addMarker;
-MarkerClusterer.prototype['addMarkers'] = MarkerClusterer.prototype.addMarkers;
-MarkerClusterer.prototype['clearMarkers'] =
-    MarkerClusterer.prototype.clearMarkers;
-MarkerClusterer.prototype['fitMapToMarkers'] =
-    MarkerClusterer.prototype.fitMapToMarkers;
-MarkerClusterer.prototype['getCalculator'] =
-    MarkerClusterer.prototype.getCalculator;
-MarkerClusterer.prototype['getGridSize'] =
-    MarkerClusterer.prototype.getGridSize;
-MarkerClusterer.prototype['getExtendedBounds'] =
-    MarkerClusterer.prototype.getExtendedBounds;
-MarkerClusterer.prototype['getMap'] = MarkerClusterer.prototype.getMap;
-MarkerClusterer.prototype['getMarkers'] = MarkerClusterer.prototype.getMarkers;
-MarkerClusterer.prototype['getMaxZoom'] = MarkerClusterer.prototype.getMaxZoom;
-MarkerClusterer.prototype['getStyles'] = MarkerClusterer.prototype.getStyles;
-MarkerClusterer.prototype['getTotalClusters'] =
-    MarkerClusterer.prototype.getTotalClusters;
-MarkerClusterer.prototype['getTotalMarkers'] =
-    MarkerClusterer.prototype.getTotalMarkers;
-MarkerClusterer.prototype['redraw'] = MarkerClusterer.prototype.redraw;
-MarkerClusterer.prototype['removeMarker'] =
-    MarkerClusterer.prototype.removeMarker;
-MarkerClusterer.prototype['removeMarkers'] =
-    MarkerClusterer.prototype.removeMarkers;
-MarkerClusterer.prototype['resetViewport'] =
-    MarkerClusterer.prototype.resetViewport;
-MarkerClusterer.prototype['repaint'] =
-    MarkerClusterer.prototype.repaint;
-MarkerClusterer.prototype['setCalculator'] =
-    MarkerClusterer.prototype.setCalculator;
-MarkerClusterer.prototype['setGridSize'] =
-    MarkerClusterer.prototype.setGridSize;
-MarkerClusterer.prototype['setMaxZoom'] =
-    MarkerClusterer.prototype.setMaxZoom;
-MarkerClusterer.prototype['onAdd'] = MarkerClusterer.prototype.onAdd;
-MarkerClusterer.prototype['draw'] = MarkerClusterer.prototype.draw;
-
-Cluster.prototype['getCenter'] = Cluster.prototype.getCenter;
-Cluster.prototype['getSize'] = Cluster.prototype.getSize;
-Cluster.prototype['getMarkers'] = Cluster.prototype.getMarkers;
-
-ClusterIcon.prototype['onAdd'] = ClusterIcon.prototype.onAdd;
-ClusterIcon.prototype['draw'] = ClusterIcon.prototype.draw;
-ClusterIcon.prototype['onRemove'] = ClusterIcon.prototype.onRemove;
-
-Object.keys = Object.keys || function(o) {  
-    var result = [];  
-    for(var name in o) {  
-        if (o.hasOwnProperty(name))  
-          result.push(name);  
-    }  
-    return result;  
 };
