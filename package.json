@@ -5,8 +5,11 @@
   "main": "server.js",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "console-stamp": "^0.2.6",
+    "dstk": "0.0.2",
     "express": "^4.16.2",
     "express-handlebars": "^3.0.0",
+    "geocoder": "^0.2.3",
     "mysql": "^2.15.0",
     "mysql2": "^1.5.1",
     "sequelize": "^4.32.2"
@@ -18,12 +21,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GeonyAyyad/VoteKnockerApp.git"
+    "url": "git+https://github.com/lindsayluwho/VoteKnockerApp.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/GeonyAyyad/VoteKnockerApp/issues"
+    "url": "https://github.com/lindsayluwho/VoteKnockerApp/issues"
   },
-  "homepage": "https://github.com/GeonyAyyad/VoteKnockerApp#readme"
-} 
+  "homepage": "https://github.com/lindsayluwho/VoteKnockerApp#readme"
+}

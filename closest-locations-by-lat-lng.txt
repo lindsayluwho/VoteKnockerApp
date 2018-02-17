@@ -1,0 +1,11 @@
+SELECT retailer, (3963.0 * acos(sin($lat/57.2958) * sin(lat/57.2958) + cos($lat/57.2958) * cos(lat/57.2958) * cos(long/57.2958 - $lng/57.2958))) as miles, address, city, state, zip_code FROM newsonduty_store_locations_dti ORDER BY miles ASC limit 10
+
+I have a list of stories with their lat and long
+and that query takes your lat and long and finds the stories that are closest to you
+$lat and $lng are the user's coordinates
+and the rest stays fixed
+super easy to use
+a record in the db looks like this :
+ id   |       retailer       |     address     |   city   | state | zip_code |    lat     |    long    
+--------+----------------------+-----------------+----------+-------+----------+------------+------------
+KG1129 | ST PETERS STATIONERY | 6830 RIDGE BLVD | New York | NY    |    11220 | 40.6367652 | -74.029107

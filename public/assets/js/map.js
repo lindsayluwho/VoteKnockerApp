@@ -1,14 +1,24 @@
-
 function initMap() {
     console.log('at maps');
+    var lat = 40.7834338;
+    var lng = -74.2162569;
+    var zoom = 15;
     var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 15,
-        center: { lat: 40.7834338, lng: -74.2162569 },
+        zoom: zoom,
+        center: { lat: lat, lng: lng },
         disableDefaultUI: true
     });
 
-   
-    $.post("/api/filter", function (data) {
+    var coordinates = {
+      lat: lat,
+      lng: lng
+    };
+
+   console.log(`Coordinates: ${JSON.stringify(coordinates)}`);
+    $.ajax({
+      method: "GET",
+      url: "/api/markers/" + lat +"/" + lng
+    }).done(function (data) {
             console.log(data);
         for (var i = 0, length = data.length; i < length; i++) {
             var results = data[i],
@@ -23,11 +33,11 @@ function initMap() {
            var marker = new google.maps.Marker({
                position: latLng,
                map: map,
-               title: results.name,
-               address:results.streetNum + " "+ results.streetName +", " + results.city +" " + results.zip,
+               title: results.firstName + " " + results.lastName,
+               address: results.address+"<br>"  + results.city +", NJ " + results.zip,
                icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
                getName: function(){
-                   var text =`<p>${this.address}</p><a href="../status/${results.voterId}"><button type="button" class="btn btn-primary" id="button-status">Voter Status</button></a>`;
+                   var text =`<p>${this.title}</p><p>${this.address}</p><a href="../status/${results.voterId}"><button type="button" class="btn btn-primary" id="button-status">Voter Status</button></a>`;
                    return text;
                }
 
@@ -36,11 +46,11 @@ function initMap() {
                var marker = new google.maps.Marker({
                    position: latLng,
                    map: map,
-                   title: results.name,
-                   address: results.streetNum + " "+ results.streetName +", " + results.city +" " + results.zip,
+                   title: results.firstName + " " + results.lastName,
+                   address: results.address+"<br>"  + results.city +", NJ " + results.zip,
                    icon: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
                    getName: function () {
-                       var text = `<p>${this.address}</p><a href="../status/${results.voterId}"><button type="button" class="btn btn-primary" id="button-status">Voter Status</button></a>`;
+                       var text = `<p>${this.title}</p><p>${this.address}</p><a href="../status/${results.voterId}"><button type="button" class="btn btn-primary" id="button-status">Voter Status</button></a>`;
                        return text;
                    }
                });
@@ -103,12 +113,10 @@ $(document).ready(function () {
 
  });
 
-
-
+$("#zoom-in").click(function(){
 
 });
 
 
 
-
-
+});

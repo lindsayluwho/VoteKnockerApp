@@ -15,7 +15,7 @@ var db = require("../models");
 module.exports = function(app) {
 
   // Each of the below routes just handles the HTML page that the user gets sent to.
- 
+
 
   // index route loads view.html
   app.get("/", function(req, res) {
@@ -23,37 +23,37 @@ module.exports = function(app) {
   });
 
   app.get("/status/:id", function(req, res) {
-      var voterId = req.params.id;
-      connection.query("SELECT * FROM alphavoters2 WHERE voterId =?", voterId, function(err, result) {
-        console.log(result[0]);
-        res.render("status", result[0]);
-      });
+    var voterId = req.params.id;
+    connection.query("SELECT * FROM alphavoters WHERE voterId =?", voterId, function(err, result) {
+      console.log(result[0]);
+      res.render("status", result[0]);
     });
+  });
 
-    app.get("/userStats", function(req, res) {
-      res.render("userStats");
-    });
+  app.get("/userStats", function(req, res) {
+    res.render("userStats");
+  });
 
-    
+
   app.get("/interactions/:id", function(req, res) {
-      var voterId = req.params.id;
-      connection.query("SELECT * FROM alphavoters2 WHERE voterId =?", voterId, function(err, result) {
-        res.render("interactions", result[0]);
-      });
+    var voterId = req.params.id;
+    connection.query("SELECT * FROM alphavoters2 WHERE voterId =?", voterId, function(err, result) {
+      res.render("interactions", result[0]);
+    });
+  });
+
+  // GET route for getting all of the stats
+  app.get("/stats", function(req, res) {
+
+    connection.query("SELECT * FROM voterinteractions", function(err, result) {
+      console.log(result);
+      var interaction = {
+        interactions: result
+      };
+      res.render("userStats", interaction);
     });
 
-      // GET route for getting all of the stats
-      app.get("/stats", function(req, res) {
-     
-          connection.query("SELECT * FROM voterinteractions", function(err, result) {
-            console.log(result);
-            var interaction = {
-              interactions : result
-            };
-            res.render("userStats", interaction);
-          });
+  });
 
-      });
 
-   
-};  // module.exports 
+}; // module.exports

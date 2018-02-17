@@ -6,10 +6,10 @@ if(process.env.JAWSDB_URL){
 else {
     var connection = mysql.createConnection({
         port: 3306,
-        host: "cdm1s48crk8itlnr.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-        user: "t6oeugu1r8jfpqpz",
-        password: "z940sw7d0ectjroj",
-        database: "ahv1kpzupd7s0qbw"
+        host: "127.0.0.1",
+        user: "root",
+        password: "",
+        database: "voteKnockerDB"
     });
 }
 
