@@ -62,14 +62,14 @@ function geocodeAddresses() {
 						var latitude = "error";
 						var voterId = voter.voterId;
 						addLongLat(longitude, latitude, voterId);
-						console.log(`Voter ID: ${voterId}\nLongitude: ${longitude}\nLatitude: ${latitude}\nCounter: ${counter}`);
+						// console.log(`Voter ID: ${voterId}\nLongitude: ${longitude}\nLatitude: ${latitude}\nCounter: ${counter}`);
 					}
 					else if (!data[address]) {
 						var longitude = "error";
 						var latitude = "error";
 						var voterId = voter.voterId;
 						addLongLat(longitude, latitude, voterId);
-						console.log(`Voter ID: ${voterId}\nLongitude: ${longitude}\nLatitude: ${latitude}\nCounter: ${counter}`);
+						// console.log(`Voter ID: ${voterId}\nLongitude: ${longitude}\nLatitude: ${latitude}\nCounter: ${counter}`);
 					}
 					// addLongLat(data);
 					else {

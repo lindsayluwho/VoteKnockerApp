@@ -1,9 +1,11 @@
 #map {
   height: 100%;
 }
-#button-status{
-  padding:6px 1px;
+
+#button-status {
+  padding: 6px 1px;
 }
+
 html,
 body {
   height: 100%;
@@ -12,12 +14,13 @@ body {
   background-color: lightslategrey;
 }
 
+
 /* #main-content {
     padding-top: 60px;
 } */
 
 #logo {
- height: 50px;
+  height: 50px;
 }
 
 #mainNav {
@@ -26,173 +29,198 @@ body {
   background-color: lightsteelblue;
 }
 
-#mainNav.navbar-nav > li.nav-item > a {
-  color: #212529 ;
+#mainNav.navbar-nav>li.nav-item>a {
+  color: #212529;
 }
+
 
 /* Filter Menu */
+
 .navbar-primary {
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: lightsteelblue;
-    left: 0px;
-    position: absolute;
-    top: 20px;
-    width: 500px;
-    bottom: 0px;
-    z-index: 8;
-    overflow: auto;
-    -webkit-transition: all 0.1s ease-in-out;
-    -moz-transition: all 0.1s ease-in-out;
-    transition: all 0.1s ease-in-out;
-  }
-
-  .navbar-primary.collapsed {
-    padding-left: 20px;
-    width: 10px;
-    overflow: hidden;
-  }
-
-  .btn-expand-collapse {
-    position: absolute;
-    display: block;
-    bottom:0;
-    left: 0px;
-    width: 20px;
-    color: grey;
-    font-size: 20px;
-    font-weight: 900;
-    text-align: center;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: lightsteelblue;
+  left: 0px;
+  position: absolute;
+  top: 20px;
+  width: 500px;
+  bottom: 0px;
+  z-index: 8;
+  overflow: auto;
+  -webkit-transition: all 0.1s ease-in-out;
+  -moz-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
+
+.navbar-primary.collapsed {
+  padding-left: 20px;
+  width: 10px;
+  overflow: hidden;
+}
+
+.btn-expand-collapse {
+  position: absolute;
+  display: block;
+  bottom: 50%;
+  right: 0px;
+  width: 24px;
+  height: 24px;
+  color: grey;
+  font-size: 24px;
+  font-weight: 900;
+  text-align: center;
+}
+
+
 
 .navbar-primary.collapsed .glyphicon {
-  font-size: 18px;
+  font-size: 24px;
 }
 
-  .navbar-primary-menu {
-    padding: 80px 50px 30px 50px;
-  }
+.navbar-primary-menu {
+  padding: 80px 50px 30px 50px;
+}
 
-  .bottom-margin {
-    margin-bottom: 10px;
-  }
+.bottom-margin {
+  margin-bottom: 10px;
+}
 
-  .more-bottom-margin {
-    margin-bottom: 15px;
-  }
+.more-bottom-margin {
+  margin-bottom: 15px;
+}
 
-  .top-padding {
-    padding-top: 5px;
-  }
+.top-padding {
+  padding-top: 5px;
+}
 
-  #reg-school-district-input {
-    padding-top: 8px;
-  }
+#reg-school-district-input {
+  padding-top: 8px;
+}
 
-  #state-input {
-    padding-left: 0px;
-  }
+#state-input {
+  padding-left: 0px;
+}
 
-  #city-input {
-    padding-right: 0px;
-    margin-bottom: 2px;
-  }
+#city-input {
+  padding-right: 0px;
+  margin-bottom: 2px;
+}
 
-  #address-label {
-    padding-bottom: 0px;
-  }
+#address-label {
+  padding-bottom: 0px;
+}
 
- 
-  .btn-expand-collapse:hover,
-  .btn-expand-collapse:focus {
-      background-color: #222;
-      color: white;
-  }
-  
-  .btn-expand-collapse:active {
-      background-color: #111;
-  }
 
-  div.form-group.row {
-    margin-bottom: 0px;
-  }
+.btn-expand-collapse:hover,
+.btn-expand-collapse:focus {
+  color: white;
+  text-shadow: 1px 1px 1px grey;  
+}
 
-  label.filter-menu
-  {
-    font-size: 12px;
+.btn-expand-collapse:active {
+  color: white;
+  text-shadow: 1px 1px 1px grey;
+}
+
+div.form-group.row {
+  margin-bottom: 0px;
+}
+
+label.filter-menu {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+input.filter-menu,
+select.filter-menu {
+  height: 22px !important;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+select.filter-menu {
+  padding: 0px;
+}
+
+#filter-menu-submit, #current-location, #address-search, input#address-center {
+  padding: 1px 6px;
+  font-family: sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: .2em;
+}
+
+#filter {
+  font-size: 14px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+
+#search, div#current-location {
+  padding: 0px;
+}
+
+#county {
+  margin-top: 7px;
+}
+
+#address-center {
+  margin-top: 3px;
+}
+
+label#address-search{
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+button#current-location {
+  margin-top: 3px;
+}
+
+
+
+@media only screen and (max-width: 768px) {
+  .navbar-nav>li.nav-item>a {
+    font-size: 22px !important;
+    color: white !important;
+  }
+}
+
+
+@media only screen and (max-width: 425px) {
+
+  input.filter-menu select.filter-menu {
+    height: 14px !important;
+    font-size: 10px;
     font-weight: 600;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: #fff;
-  }
-
-  input.filter-menu,
-  select.filter-menu
-  {
-    height: 22px !important;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  select.filter-menu {
-    padding: 0px;
   }
 
   #filter-menu-submit {
-    padding: 1px 6px;
-    font-family:sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border-radius: .2em;
-    margin-left: 10px;
+    font-size: 14px;
   }
 
-
-
-  @media only screen and (max-width: 768px) {
-    .navbar-nav > li.nav-item > a {
-      font-size: 22px !important;
-      color: white !important;
-    }
-  
+  .navbar-primary-menu {
+    padding: 90px 0px 30px 20px;
   }
 
-
-  @media only screen and (max-width: 425px) {
-
-    input.filter-menu
-    select.filter-menu
-    {
-      height: 14px !important;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-  
-    #filter-menu-submit {
-      font-size: 14px;
-    }
-  
-    .navbar-primary-menu {
-      padding: 90px 0px 30px 20px;
-    }
-  
-    .navbar-primary {
-      width: 100%;
-      left:0;
-      right:0px
-    }
+  .navbar-primary {
+    width: 100%;
+    left: 0;
+    right: 0px
   }
+}
 
 @media only screen and (max-width: 340px) {
 
-  input.filter-menu
-  select.filter-menu
-  {
+  input.filter-menu select.filter-menu {
     height: 10px !important;
     font-size: 6px;
     font-weight: 600;
@@ -206,10 +234,9 @@ body {
 
   .navbar-primary {
     width: 100%;
-    left:0;
-    right:0px
+    left: 0;
+    right: 0px
   }
 }
-
 
 
