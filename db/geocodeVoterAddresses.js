@@ -87,7 +87,7 @@ function geocodeAddresses() {
 			
 	});
 
-  setTimeout(geocodeAddresses, 90000);
+  setTimeout(geocodeAddresses, 100000);
 
 };
 

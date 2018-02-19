@@ -1,11 +1,14 @@
 var connection = require("../config/connection");
 var fs = require("fs");
 var path = require("path");
+var mysql = require("mysql");
 
 // var db = require("../models");
 
 module.exports = function(app) {
 
+
+  // route to get unfiltered markers
   app.get("/api/markers/:lat/:lng", function(req, res) {
     console.log(`Coordinates: ${req.params.lat}, ${req.params.lng}`);
     connection.query("SELECT voterId, (3959.0 * acos(cos( radians( ? ) ) * cos( radians( lat ) ) * cos( radians( longitude ) - radians( ? )) + sin(radians(?)) * sin(radians(lat)) )) AS miles, firstName, lastName, party, lat, longitude, address, city, zip FROM alphavoters HAVING miles < 1 ORDER BY miles", [req.params.lat, req.params.lng, req.params.lat], function(err, data) {
@@ -14,12 +17,10 @@ module.exports = function(app) {
         }
       console.log(`Data: ${data}`);
       res.json(data);
-
     });
-
   });
 
-
+  // route to get states list from static file for states dropdown in filter
   app.get("/api/states", function(req, res) {
     fs.readFile("public/assets/static/states.txt", "utf8", function(error, data) {
 
@@ -36,40 +37,62 @@ module.exports = function(app) {
     });
   });
 
-  // app.get("/voterhistory/:id", function(request, response) {
-  //   var voterId = request.params.id;
-  //   connection.query("SELECT * FROM alphavoters WHERE alphavoters.voterId =? UNION SELECT * FROM voterhistories WHERE voterhistories.voterId =? UNION SELECT * FROM voterinteractions WHERE voterinteractions.voterId =? ", { voterId, voterId, voterId }, function(err, res) {
-  //     if (err) {
-  //       console.log(err);
-  //     }
-  //     console.log(res);
-  //     response.json(res);
-  //   });
-  // });
- app.get("/voterhistory/:id", function(request, response){
-        var voterId = request.params.id;
-        connection.query("SELECT * FROM voterHistory WHERE voterId =?", voterId, function(err, res) {
-        console.log(res);
-        //for (var i = 0; i < res.length; i++) {
-        //   console.log(res.firstName + " " + res.middleName + " " + res.lastName);
-        //   console.log(res.streetNum + " " + res.streetName + " " + res.aptUnitNum);
-        //   console.log("Voter ID: " + res.voterId);
-        //   console.log("Legacy ID: " + res.legacyId);
-        //   console.log("Municipality: " + res.municipality);
-        //   console.log("Date of Birth: " + res.dob);
-        //   console.log("Ward: " + res.ward);
-        //   console.log("Party: " + res.party);
-        //   console.log("District: " + res.district);
-        //   console.log("Status: " + res.status);
-        //   console.log("Congressional District: " + res.congDist);
-        //   console.log("Legislative Distract: " + res.legDist);
-        //   console.log("Freeholder: " + res.freeholder);
-        //   console.log("School District: " + res.schoolDist);
-        //   console.log("Regional School: " + res.regionalSchool);
-          response.json(res);
-        //}        
-      });
+
+  // route to get filtered markers based on filter query
+  app.get("/api/filter/:lat/:lng/:county/:address/:city/:zip/:party/:status/:ward/:district/:ld/:cd/:freeholder/:schoolDist/:regSchoolDist/:fireDist", function(req, res){
+
+    var lat = req.params.lat;
+    var lng = req.params.lng;
+    var county = req.params.county;
+    var address = req.params.address;
+    var city = req.params.city;
+    var zip = req.params.zip;
+    var party = req.params.party;
+    var status = req.params.status;
+    var ward = req.params.ward;
+    var district = req.params.district;
+    var ld = req.params.ld;
+    var cd = req.params.cd;
+    var freeholder = req.params.freeholder;
+    var schoolDist = req.params.schoolDist;
+    var regSchoolDist = req.params.regSchoolDist;
+    var fireDist = req.params.fireDist;
+
+    if (county == "empty") county = '%';
+    if (address == "empty") address = '%';
+    if (city == "empty") city = '%';
+    if (zip == "empty") zip = '%';
+    if (party == "empty") party = '%';
+    if (status == "empty") status = '%';
+    if (ward == "empty") ward = '%';
+    if (district == "empty") district = '%';
+    if (ld == "empty") ld = '%';
+    if (cd == "empty") cd = '%';
+    if (freeholder == "empty") freeholder = '%';
+    if (schoolDist == "empty") schoolDist = '%';
+    if (regSchoolDist == "empty") regSchoolDist = '%';
+    if (fireDist == "empty") fireDist = '%';
+
+    var sqlQuery = "SELECT voterId, firstName, lastName, party, lat, longitude, address, city, zip, (3959.0 * acos(cos( radians(? ) ) * cos( radians( lat ) ) * cos( radians( longitude ) - radians( ? )) + sin(radians(?)) * sin(radians(lat)) )) AS miles FROM alphavoters WHERE county LIKE ? AND address LIKE ? AND zip LIKE ? AND party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? HAVING miles < 10";
+
+    console.log(`Query: ${sqlQuery}`);
+    
+    connection.query(sqlQuery,[lat, lng, lat, county, address, zip, party, status, ward, district, ld, cd, freeholder, schoolDist, regSchoolDist, fireDist, city], function(err, data) {
+        if(err){
+            console.log(err);
+        }
+      console.log(`Data: ${data}`);
+      res.json(data);
     });
+  });
+
+  app.get("/voterhistory/:id", function(request, response){
+    var voterId = request.params.id;
+    connection.query("SELECT * FROM voterHistories WHERE voterId =?", voterId, function(err, res) {
+      console.log(JSON.stringify(res));
+      response.json(res);     
+    });
+  });
 
   // // POST route for saving a new interaction
   // app.post("/api/interactions", function(req, res) {

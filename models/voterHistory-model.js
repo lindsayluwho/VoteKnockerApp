@@ -16,3 +16,16 @@ module.exports = function (sequelize, DataTypes) {
 
 	return VoterHistory;
 };
+
+// voterId 
+// electionDate
+// electionName
+// electionType
+// electionCategory
+// ballotType
+// DOB
+// phoneNum
+// sex   
+
+
+
