@@ -1,23 +1,23 @@
-{
-    "development": {
-        "username": "root",
-            "password": "",
-                "database": "voteKnockerDB",
-                    "host": "127.0.0.1",
-                        "dialect": "mysql"
-    },
-    "test": {
-        "username": "root",
-            "password": "",
-                "database": "voteKnockerDB",
-                    "host": "127.0.0.1",
-                        "dialect": "mysql"
-    },
-    "production": {
-        "username": "root",
-            "password": "",
-                "database": "voteKnockerDB",
-                    "host": "127.0.0.1",
-                        "dialect": "mysql"
-    }
-}
+// {
+//     "development": {
+//   "username": "RDS_USERNAME",
+//             "password": "RDS_PASSWORD",
+//                 "database": "ebdb",
+//                     "host": "RDS_HOST",
+//                         "dialect": "mysql"
+//     },
+//     "test": {
+//   "username": "RDS_USERNAME",
+//             "password": "RDS_PASSWORD",
+//                 "database": "ebdb",
+//                     "host": "RDS_HOST",
+//                         "dialect": "mysql"
+//     },
+//     "production": {
+//         "username": "RDS_USERNAME",
+//             "password": "RDS_PASSWORD",
+//                 "database": "ebdb",
+//                     "host": "RDS_HOST",
+//                         "dialect": "mysql"
+//     }
+// }

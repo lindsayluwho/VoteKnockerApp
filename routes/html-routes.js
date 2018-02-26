@@ -7,7 +7,7 @@
 var path = require("path");
 var connection = require("../config/connection");
 
-var db = require("../models");
+// var db = require("../models");
 
 
 // Routes
@@ -15,7 +15,7 @@ var db = require("../models");
 module.exports = function(app) {
 
   // Each of the below routes just handles the HTML page that the user gets sent to.
-
+                    
 
   // index route loads view.html
   app.get("/", function(req, res) {
@@ -24,9 +24,13 @@ module.exports = function(app) {
 
   app.get("/status/:id", function(req, res) {
     var voterId = req.params.id;
-    connection.query("SELECT * FROM alphavoters WHERE voterId =?", voterId, function(err, result) {
-      console.log(result[0]);
-      res.render("status", result[0]);
+    connection.query("SELECT * FROM AlphaVoters WHERE voterId =?", voterId, function(err, result) {
+      connection.query("SELECT VoterHistories.phoneNum, VoterHistories.sex, VoterHistories.dob, VoterHistories.electionDate, VoterHistories.electionName, VoterHistories.electiontype, VoterHistories.electioncategory, VoterHistories.ballottype FROM VoterHistories, AlphaVoters WHERE AlphaVoters.voterid = VoterHistories.voterid AND AlphaVoters.voterId =?", voterId, function(err, results) {
+        console.log(result[0]);
+        console.log(results[0]);
+        result[0].voterhistory = results[0];
+        res.render("status", result[0]);
+      });
     });
   });
 
@@ -37,7 +41,7 @@ module.exports = function(app) {
 
   app.get("/interactions/:id", function(req, res) {
     var voterId = req.params.id;
-    connection.query("SELECT * FROM alphavoters2 WHERE voterId =?", voterId, function(err, result) {
+    connection.query("SELECT * FROM AlphaVoters WHERE voterId =?", voterId, function(err, result) {
       res.render("interactions", result[0]);
     });
   });

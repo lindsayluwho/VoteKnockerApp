@@ -1,95 +1,135 @@
-
-    <!-- Main Content-->
+<!-- Main Content-->
+<br>
+<br>
+<div class="container">
+  <div class="jumbotron">
+    <div>
+      <a href="/">
+        <h5>
+          <span class="glyphicon glyphicon-menu-left" aria-hidden="true" id="back-to-map"></span> Back to map
+        </h5>
+      </a><br>
+    </div>
+    <!-- Knocking Button -->
+    <div class="row-col-10">
+      <div class="button-center">
+        <a href="/interactions/{{voterId}}">
+          <button type="button" class="btn btn-danger btn-lg">Knock This Voter</button>
+        </a>
+      </div>
+    </div>
     <br>
-    <br>
-    <div class="container">
-      <div class="jumbotron">
-      <a href="/"><span class="glyphicon glyphicon-menu-left" aria-hidden="true" id="back-to-map"></span> Back to map</a>
-        <!-- Knocking Button -->
-        <div class="row-col-10">
-          <div class="button-center">
-            
-            <a href="/interactions/{{voterId}}">
-              <button type="button" class="btn btn-danger btn-lg" >Knock This Voter</button>
-            </a>
-          </div>
+    <div class="row-col-10">
+      <div class="flex-table">
+        <h1><div id="firstName">{{firstName}}</div></h1>
+        <h1><div id="middleName">{{middleName}}</div></h1>
+        <h1><div id="lastName">{{lastName}}</div></h1>
+      </div>
+    </div>
+    <div class="row-col-10">
+      <div class="flex-table">
+        <h3><id class="streetNumber">{{streetNum}}</id></h3>
+        <h3><id class="streetName">{{streetName}}</id></h3>
+        <h3><id class="unitNum">{{unitNum}}</id></h3>
+      </div>
+    </div>
+    <div class="row-col-10">
+      <div class="flex-table">
+        <h3><id class="city">{{city}},</id></h3>
+        <h3><id class="zip">{{zip}}</id></h3>
+      </div>
+    </div>
+    <div class="row-col-10">
+      <div class="flex-table">
+        <h3><id class="phone">{{voterhistory.phoneNum}}</id></h3><br>
+        <h3><id class="email">{{email}}</id></h3>
+      </div>
+    </div>
+    <div class="row-col-10">
+        <center>
+          <h1><id class="Party">{{party}}</id></h1>
+          <h3><id class="Status">Status: {{status}}</id></h3>
+        </center>
+    </div>
+    <!-- <div class="jumbotron"> -->
+      <!--     ADD STYLING FOR DISTRICT BOX -->
+      <div class="district-box">
+        <h2> District Information </h2>
+        <h3><id class="district">District: {{district}}</id></h3>
+        <h3><id class="congDistrict">Congressional District: {{congDist}}</id></h3>
+        <h3><id class="legDistrict">Legislative District: {{legDist}}</id></h3>
+        <h3><id class="municipality">Municipality: {{municipality}}</id></h3>
+        <h3><id class="ward">Ward: {{ward}}</id></h3>
+        <h3><id class="freeholder">Freeholder: {{freeholder}}</id></h3>
+        <h3><id class="schoolDistrict">School District: {{schoolDist}}</id></h3>
+        <h3><id class="regionalSchool">Regional School: {{regionalSchool}}</id></h3>
+      </div>
+      <div class="row-col-10">
+          <h2> Demographic Information</h2>
+      </div>
+      <div class="row-col-10 flex-table">
+        <h4>Sex: {{sex}}</h4>
+      </div>
+      <div class="row-col-10 flex-table">
+        <h4>DOB: {{dob}}</h4>
+      </div>
+      <!--   Voter History  -->
+      <div class="row-col-10">
+        <br>
+        <h2> Voting History</h2>
+      </div>
+      <div class="row-col-10 flex-table">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="election-date">Date</th>
+              <th class="election-name">Election</th>
+              <th class="election-type">Type</th>
+              <th class="election-category">Category</th>
+              <th class="ballot-type">Ballot</th>
+          </tr>
+        </thead>
+        <tbody>
+        {{#each votingHistory}}
+          {{> votingHistory }}
+        {{/each}}
+        </tbody>
+      </table>
+      </div>
+      <br>
+      <!-- Interaction History -->
+      <div class="row-col-10">
+          <h2> Interaction History</h2>
         </div>
-         <br>
-         
-        <div class="row-col-10">
-          <div class="flex-table">
-
-              <h1><div id="firstName">{{firstName}}</div></h1>
-              <h1><div id="middleName">{{middleName}}</div></h1>
-              <h1><div id="lastName">{{lastName}}</div></h1>
-          </div>
+      <div class="row-col-10 flex-table">
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="interaction-date">Date</th>
+                <th class="knocked">Knocked</th>
+                <th class="literature">Literature</th>
+                <th class="petition">Petition</th>
+                <th class="user">Canvasser</th>
+              </tr>
+            </thead>
+            <tbody>
+            {{#each interactionHistory}}
+              {{> interactionHistory }}
+            {{/each}}
+            </tbody>
+          </table>
         </div>
-        
-        <div class="row-col-10">
-          <div class="flex-table">
-              <h3><id class="streetNumber">{{streetNum}}</id></h3>
-              <h3><id class="streetName">{{streetName}}</id></h3>
-              <h3><id class="unitNum">{{unitNum}}</id></h3>
-          </div>
+      <br>
+      <!-- Knocking Button -->
+      <div class="row-col-10">
+        <div class="button-center">
+          <a href="/interactions/{{voterId}}">
+            <button type="button" class="btn btn-danger btn-lg">Knock This Voter</button>
+          </a>
         </div>
+      </div>
+    </div>
+ </div>
+  </body>
 
-        <div class="row-col-10">
-          <div class="flex-table">
-              <h3><id class="city">{{city}},</id></h3>
-              <h3><id class="zip">{{zip}}</id></h3>
-          </div>
-        </div>
-
-            <div class="jumbotron">
-              <!--     ADD STYLING FOR DISTRICT BOX -->
-              <div class="district-box">
-                <h2> District Information </h2>
-                <br>
-                <h3><id class="district">District: {{district}}</id></h3>
-                 <h3><id class="congDistrict">Congressional District: {{congDist}}</id></h3>
-
-                <h3><id class="legDistrict">Legislative District: {{legDist}}</id></h3>
-
-                <h3><id class="municipality">Municipality: {{municipality}}</id></h3>
-                <h3><id class="ward">Ward: {{ward}}</id></h3>
-                <h3><id class="freeholder">Freeholder: {{freeholder}}</id></h3>
-                <h3><id class="schoolDistrict">School District: {{schoolDist}}</id></h3>
-                <h3><id class="regionalSchool">Regional School: {{regionalSchool}}</id></h3>
-
-               
-            </div>
-            <br>
-            
-            <!--   Voter History  -->
-            <div class="row">
-              <br>
-              <h2> Voting History</h2>
-            </div>
-
-              <h3><id class="Party">Party: {{party}}</id></h3>
-
-              <h3><id class="Status">Status: {{status}}</id></h3>
-              <br>
-              
-
-  
-            <!-- Interaction History -->
-
-            <div class="row">
-              <h2> Interaction History</h2>
-              <br>
-              <br>
-            </div>
-            <!-- Knocking Button -->
-            <div class="row-col-10">
-              <div class="button-center">
-                
-               <a href="/interactions/{{voterId}}">
-              <button type="button" class="btn btn-danger btn-lg" >Knock This Voter</button>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </body>
-    </html>
+  </html>

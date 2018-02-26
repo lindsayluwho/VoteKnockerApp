@@ -5,15 +5,11 @@ require('console-stamp')(console, '[HH:MM:ss.l]');
 var mysql = require("mysql");
 
 var connection = mysql.createConnection({
-  host: "localhost",
-  port: 3306,
-
-  // Your username
+  port: "3306",
+  host: "aa5hudhhz5s6c0.cm4fvld7rmid.us-west-1.rds.amazonaws.com",
   user: "root",
-
-  // Your password
-  password: "",
-  database: "voteKnockerDB"
+  password: "9Letters!",
+  database: "voteknockerdb"
 });
 
 connection.connect(function(err) {
@@ -29,7 +25,7 @@ function geocodeAddresses() {
 	//grab voters from AlphaVoters
 
 	var query = connection.query(
-		"SELECT voterId, streetNum, zip, streetName, city FROM AlphaVoters WHERE longitude = 'error' LIMIT 25000",  
+		"SELECT voterId, streetNum, zip, streetName, city FROM AlphaVoters WHERE longitude = 'error' AND congDist = '7' LIMIT 25000",  
 		function(err, res){
 			// if (err)
 			// {

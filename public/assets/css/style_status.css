@@ -1,3 +1,6 @@
+html,body{
+  background-color: #b4c4dc;
+}
 
 .district-box{
   background: #b4c4dc;
@@ -52,5 +55,18 @@
 
 .extraContact {
 width: 300px;
+}
+
+.table{
+  font-size: 10px;
+  padding-left: 0px;
+}
+
+.jumbotron{
+  width: 100%;
+}
+
+.container{
+  width: 100%;
 }
 

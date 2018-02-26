@@ -11,7 +11,7 @@ module.exports = function(app) {
   // route to get unfiltered markers
   app.get("/api/markers/:lat/:lng", function(req, res) {
     console.log(`Coordinates: ${req.params.lat}, ${req.params.lng}`);
-    connection.query("SELECT voterId, (3959.0 * acos(cos( radians( ? ) ) * cos( radians( lat ) ) * cos( radians( longitude ) - radians( ? )) + sin(radians(?)) * sin(radians(lat)) )) AS miles, firstName, lastName, party, lat, longitude, address, city, zip FROM alphavoters HAVING miles < 1 ORDER BY miles", [req.params.lat, req.params.lng, req.params.lat], function(err, data) {
+    connection.query("CALL getRadius(?,?)", [req.params.lat, req.params.lng], function(err, data) {
         if(err){
             console.log(err);
         }
@@ -73,24 +73,16 @@ module.exports = function(app) {
     if (regSchoolDist == "empty") regSchoolDist = '%';
     if (fireDist == "empty") fireDist = '%';
 
-    var sqlQuery = "SELECT voterId, firstName, lastName, party, lat, longitude, address, city, zip, (3959.0 * acos(cos( radians(? ) ) * cos( radians( lat ) ) * cos( radians( longitude ) - radians( ? )) + sin(radians(?)) * sin(radians(lat)) )) AS miles FROM alphavoters WHERE county LIKE ? AND address LIKE ? AND zip LIKE ? AND party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? HAVING miles < 10";
+    var sqlQuery = "CALL getFilterRadius(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     console.log(`Query: ${sqlQuery}`);
     
-    connection.query(sqlQuery,[lat, lng, lat, county, address, zip, party, status, ward, district, ld, cd, freeholder, schoolDist, regSchoolDist, fireDist, city], function(err, data) {
+    connection.query(sqlQuery,[lat, lng, county, address, zip, party, status, ward, district, ld, cd, freeholder, schoolDist, regSchoolDist, fireDist, city], function(err, data) {
         if(err){
             console.log(err);
         }
       console.log(`Data: ${data}`);
       res.json(data);
-    });
-  });
-
-  app.get("/voterhistory/:id", function(request, response){
-    var voterId = request.params.id;
-    connection.query("SELECT * FROM voterHistories WHERE voterId =?", voterId, function(err, res) {
-      console.log(JSON.stringify(res));
-      response.json(res);     
     });
   });
 

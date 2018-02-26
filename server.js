@@ -7,6 +7,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var path = require("path");
+require('console-stamp')(console, '[HH:MM:ss.l]');
 
 // Sets up the Express App
 // =============================================================
