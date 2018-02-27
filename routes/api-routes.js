@@ -43,7 +43,7 @@ module.exports = function(app) {
     var minlng = req.params.lng - math.rad2deg(distance / radius / Math.cos(math.deg2rad(req.params.lat)));
     console.log(`Min Lat: ${minlat} \n Max Lat: ${maxlat} \n Min Lng: ${minlng} \n Max Lng: ${maxlng}`)
 
-    connection.query("SELECT voterId, firstName, lastName, party, lat, longitude, address, city, zip FROM AlphaVoters WHERE lat BETWEEN ? AND ? longitude BETWEEN ? AND ?", [minlat, maxlat, minlng, maxlng], function(err, data) {
+    connection.query("SELECT voterId, firstName, lastName, party, lat, longitude, address, city, zip FROM AlphaVoters WHERE lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ?", [minlat, maxlat, minlng, maxlng], function(err, data) {
         if(err){
             console.log(err);
         }
