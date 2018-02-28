@@ -44,9 +44,9 @@ module.exports = function(app) {
     console.log(`Min Lat: ${minlat} \n Max Lat: ${maxlat} \n Min Lng: ${minlng} \n Max Lng: ${maxlng}`)
 
     connection.query("SELECT voterId, firstName, lastName, party, lat, longitude, address, city, zip FROM AlphaVoters WHERE lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ?", [minlat, maxlat, minlng, maxlng], function(err, data) {
-        if(err){
-            console.log(err);
-        }
+      if (err) {
+        console.log(err);
+      }
       console.log(`Data retrieved, returning to client.`);
       lat = req.params.lat;
       lng = req.params.lng;
@@ -54,10 +54,10 @@ module.exports = function(app) {
 
       // weed out all results that turn out to be too far
       data.forEach((value, index) => {
-          var resultDistance = distanceFunc(lat, lng, data[index].lat, data[index].longitude);
-          if (resultDistance > distance) {
-            data.splice(index, index+1);
-          }
+        var resultDistance = distanceFunc(lat, lng, data[index].lat, data[index].longitude);
+        if (resultDistance > distance) {
+          data.splice(index, index + 1);
+        }
       });
       res.json(data);
     });
@@ -82,7 +82,7 @@ module.exports = function(app) {
 
 
   // route to get filtered markers based on filter query
-  app.get("/api/filter/:lat/:lng/:county/:address/:city/:zip/:party/:status/:ward/:district/:ld/:cd/:freeholder/:schoolDist/:regSchoolDist/:fireDist", function(req, res){
+  app.get("/api/filter/:lat/:lng/:county/:address/:city/:zip/:party/:status/:ward/:district/:ld/:cd/:freeholder/:schoolDist/:regSchoolDist/:fireDist", function(req, res) {
 
     var lat = req.params.lat;
     var lng = req.params.lng;
@@ -116,15 +116,42 @@ module.exports = function(app) {
     if (regSchoolDist == "empty") regSchoolDist = '%';
     if (fireDist == "empty") fireDist = '%';
 
-    var sqlQuery = "CALL getFilterRadius(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    var distance = 1;
+
+    // earth's radius in km = ~6371
+    var radius = 3959;
+
+    // latitude boundaries
+    var maxlat = lat + math.rad2deg(distance / radius);
+    var minlat = lat - math.rad2deg(distance / radius);
+
+    // longitude boundaries (longitude gets smaller when latitude increases)
+    var maxlng = lng + math.rad2deg(distance / radius / Math.cos(math.deg2rad(lat)));
+    var minlng = lng - math.rad2deg(distance / radius / Math.cos(math.deg2rad(lat)));
+    console.log(`Min Lat: ${minlat} \n Max Lat: ${maxlat} \n Min Lng: ${minlng} \n Max Lng: ${maxlng}`)
+
+
+
+    var sqlQuery = "SELECT voterId, firstName, lastName, party, lat, longitude, address, city, zip FROM AlphaVoters WHERE county LIKE ? AND address LIKE ? AND zip LIKE ? AND party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? AND lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ?;";
 
     console.log(`Query: ${sqlQuery}`);
-    
-    connection.query(sqlQuery,[lat, lng, county, address, zip, party, status, ward, district, ld, cd, freeholder, schoolDist, regSchoolDist, fireDist, city], function(err, data) {
-        if(err){
-            console.log(err);
+
+    connection.query(sqlQuery, [county, address, zip, party, status, ward, district, ld, cd, freeholder, schoolDist, regSchoolDist, fireDist, city, minlat, maxlat, minlng, maxlng], function(err, data) {
+      if (err) {
+        console.log(err);
+      }
+      console.log(`Data retrieved, returning to client.`);
+      lat = req.params.lat;
+      lng = req.params.lng;
+      distance = 1;
+
+      // weed out all results that turn out to be too far
+      data.forEach((value, index) => {
+        var resultDistance = distanceFunc(lat, lng, data[index].lat, data[index].longitude);
+        if (resultDistance > distance) {
+          data.splice(index, index + 1);
         }
-      console.log(`Data: ${data}`);
+      });
       res.json(data);
     });
   });
@@ -150,7 +177,4 @@ module.exports = function(app) {
   //     res.json(dbInteraction);
   //   });
   // });
-
-
-
 }; //module.exports
