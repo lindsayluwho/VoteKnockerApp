@@ -53,7 +53,7 @@ module.exports = function(app) {
       distance = 1;
 
       // weed out all results that turn out to be too far
-      data.forEach(value, index => {
+      data.forEach((value, index) => {
           var resultDistance = distanceFunc(lat, lng, data[index].lat, data[index].longitude);
           if (resultDistance > distance) {
             data.splice(index, index+1);
