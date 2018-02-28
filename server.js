@@ -39,7 +39,13 @@ require("./routes/api-routes.js")(app);
 // Syncing our sequelize models and then starting our Express app
 // =============================================================
 // db.sequelize.sync({ force: true }).then(function() {
-  app.listen(PORT, function() {
+var server = app.listen(PORT, function() {
     console.log("App listening on PORT " + PORT);
   });
+
+server.on('connection', function(socket) {
+  console.log("A new connection was made by a client.");
+  socket.setTimeout(600 * 1000); 
+  // 30 second timeout. Change this as you see fit.
+})
 // });  
