@@ -47,7 +47,7 @@ module.exports = function(app) {
         if(err){
             console.log(err);
         }
-      console.log(`Data: ${data}`);
+      console.log(`Data retrieved, returning to client.`);
       lat = req.params.lat;
       lng = req.params.lng;
       distance = 1;
