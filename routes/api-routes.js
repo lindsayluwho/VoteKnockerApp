@@ -4,60 +4,42 @@ var path = require("path");
 var mysql = require("mysql");
 var math = require("locutus/php/math")
 
-// var db = require("../models");
-
 module.exports = function(app) {
 
   function distanceFunc(lat1, lng1, lat2, lng2) {
-    // convert latitude/longitude degrees for both coordinates
-    // to radians: radian = degree * π / 180
-    lat1 = math.deg2rad(lat1);
-    lng1 = math.deg2rad(lng1);
-    lat2 = math.deg2rad(lat2);
-    lng2 = math.deg2rad(lng2);
-
-    // calculate great-circle distance
-    distance = Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng1 - lng2));
-
-    // distance in human-readable format:
-    // earth's radius in km = ~6371
-    return 3959 * distance;
+    var distance = Math.sqrt(Math.pow(lng2 - lng1, 2) + Math.pow(lat2 - lat1, 2));
+    return distance;
   }
 
 
   // route to get unfiltered markers
   app.get("/api/markers/:lat/:lng", function(req, res) {
     console.log(`Coordinates: ${req.params.lat}, ${req.params.lng}`);
+    // // latitude boundaries
+    var maxlat = parseFloat(req.params.lat) + .02;
+    var minlat = parseFloat(req.params.lat) - .02;
 
-    var distance = 1;
-
-    // earth's radius in km = ~6371
-    var radius = 3959;
-
-    // latitude boundaries
-    var maxlat = req.params.lat + math.rad2deg(distance / radius);
-    var minlat = req.params.lat - math.rad2deg(distance / radius);
-
-    // longitude boundaries (longitude gets smaller when latitude increases)
-    var maxlng = req.params.lng + math.rad2deg(distance / radius / Math.cos(math.deg2rad(req.params.lat)));
-    var minlng = req.params.lng - math.rad2deg(distance / radius / Math.cos(math.deg2rad(req.params.lat)));
+    // // longitude boundaries (longitude gets smaller when latitude increases)
+    var maxlng = parseFloat(req.params.lng) + .02;
+    var minlng = parseFloat(req.params.lng) - .02;
     console.log(`Min Lat: ${minlat} \n Max Lat: ${maxlat} \n Min Lng: ${minlng} \n Max Lng: ${maxlng}`)
 
-    connection.query("SELECT voterId, firstName, lastName, party, lat, longitude, address, city, zip FROM AlphaVoters WHERE lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ?", [minlat, maxlat, minlng, maxlng], function(err, data) {
+    connection.query("SELECT voterId, firstName, lastName, party, lat, longitude, address, city, zip FROM AlphaVoters WHERE longitude BETWEEN ? AND ? AND lat BETWEEN ? AND ?", [minlng, maxlng, minlat, maxlat], function(err, data) {
       if (err) {
         console.log(err);
       }
       console.log(`Data retrieved, returning to client.`);
       lat = req.params.lat;
       lng = req.params.lng;
-      distance = 1;
+      // distance = 1;
 
       // weed out all results that turn out to be too far
       data.forEach((value, index) => {
         var resultDistance = distanceFunc(lat, lng, data[index].lat, data[index].longitude);
-        if (resultDistance > distance) {
+        if (resultDistance > 1) {
           data.splice(index, index + 1);
         }
+        // console.log(resultDistance);
       });
       res.json(data);
     });
@@ -116,25 +98,17 @@ module.exports = function(app) {
     if (regSchoolDist == "empty") regSchoolDist = '%';
     if (fireDist == "empty") fireDist = '%';
 
-    var distance = 1;
+    var maxlat = parseFloat(req.params.lat) + .02;
+    var minlat = parseFloat(req.params.lat) - .02;
 
-    // earth's radius in km = ~6371
-    var radius = 3959;
-
-    // latitude boundaries
-    var maxlat = lat + math.rad2deg(distance / radius);
-    var minlat = lat - math.rad2deg(distance / radius);
-
-    // longitude boundaries (longitude gets smaller when latitude increases)
-    var maxlng = lng + math.rad2deg(distance / radius / Math.cos(math.deg2rad(lat)));
-    var minlng = lng - math.rad2deg(distance / radius / Math.cos(math.deg2rad(lat)));
+    // // longitude boundaries (longitude gets smaller when latitude increases)
+    var maxlng = parseFloat(req.params.lng) + .02;
+    var minlng = parseFloat(req.params.lng) - .02;
     console.log(`Min Lat: ${minlat} \n Max Lat: ${maxlat} \n Min Lng: ${minlng} \n Max Lng: ${maxlng}`)
-
-
 
     var sqlQuery = "SELECT voterId, firstName, lastName, party, lat, longitude, address, city, zip FROM AlphaVoters WHERE county LIKE ? AND address LIKE ? AND zip LIKE ? AND party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? AND lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ?;";
 
-    console.log(`Query: ${sqlQuery}`);
+    // console.log(`Query: ${sqlQuery}`);
 
     connection.query(sqlQuery, [county, address, zip, party, status, ward, district, ld, cd, freeholder, schoolDist, regSchoolDist, fireDist, city, minlat, maxlat, minlng, maxlng], function(err, data) {
       if (err) {
@@ -151,6 +125,7 @@ module.exports = function(app) {
         if (resultDistance > distance) {
           data.splice(index, index + 1);
         }
+        // console.log(resultDistance);
       });
       res.json(data);
     });

@@ -29,6 +29,7 @@ module.exports = function(app) {
         console.log(result[0]);
         console.log(results[0]);
         result[0].voterhistory = results[0];
+        console.log(result[0].voterhistory);
         res.render("status", result[0]);
       });
     });

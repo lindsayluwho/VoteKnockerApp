@@ -25,7 +25,7 @@ function geocodeAddresses() {
 	//grab voters from AlphaVoters
 
 	var query = connection.query(
-		"SELECT voterId, streetNum, zip, streetName, city FROM AlphaVoters WHERE longitude = 'error' AND congDist = '7' LIMIT 25000",  
+		"SELECT voterId, streetNum, zip, streetName, city FROM AlphaVoters WHERE longitude = 'error' AND congDist='7' LIMIT 10000",  
 		function(err, res){
 			// if (err)
 			// {
@@ -44,6 +44,10 @@ function geocodeAddresses() {
 				var city = voter.city;
 				var state = "NJ";
 
+				if (zip.length > 5){
+					zip = zip.slice(0, 5);
+				}
+
 				//concatenate address fields
 				address = number +" "+ street +" "+ city +" "+ state +" "+ zip;
 				console.log(address);
@@ -53,18 +57,18 @@ function geocodeAddresses() {
 					// console.log('inside of geocode: ', address);
 					counter ++;
 					if (err) {
-						// console.log(err);
+						console.log(`${err} \n Counter: ${counter}`);
 						var longitude = "error";
 						var latitude = "error";
 						var voterId = voter.voterId;
-						addLongLat(longitude, latitude, voterId);
+						// addLongLat(longitude, latitude, voterId);
 						// console.log(`Voter ID: ${voterId}\nLongitude: ${longitude}\nLatitude: ${latitude}\nCounter: ${counter}`);
 					}
 					else if (!data[address]) {
 						var longitude = "error";
 						var latitude = "error";
 						var voterId = voter.voterId;
-						addLongLat(longitude, latitude, voterId);
+						// addLongLat(longitude, latitude, voterId);
 						// console.log(`Voter ID: ${voterId}\nLongitude: ${longitude}\nLatitude: ${latitude}\nCounter: ${counter}`);
 					}
 					// addLongLat(data);
@@ -83,7 +87,7 @@ function geocodeAddresses() {
 			
 	});
 
-  setTimeout(geocodeAddresses, 100000);
+  setTimeout(geocodeAddresses, 90000);
 
 };
 

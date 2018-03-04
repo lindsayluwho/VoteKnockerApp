@@ -12,7 +12,8 @@
     "geocoder": "^0.2.3",
     "locutus": "^2.0.9",
     "mysql": "^2.15.0",
-    "mysql2": "^1.5.1"
+    "mysql2": "^1.5.1",
+    "node.ajax": "^2.4.3"
   },
   "devDependencies": {},
   "scripts": {

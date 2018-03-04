@@ -19,7 +19,7 @@ function initMap() {
     lng = parseFloat(lastLongitude);
   }
 
-  var zoom = 15;
+  var zoom = 14;
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: zoom,
     center: { lat: lat, lng: lng }
@@ -332,5 +332,5 @@ function renderMarkers(map, data) {
     });
     // console.log(info);
   }
-  var markerCluster = new MarkerClusterer(map, markers, { imagePath: "../assets/img/m", maxZoom: 18 });
+  var markerCluster = new MarkerClusterer(map, markers, { imagePath: "../assets/img/m", maxZoom: 16 });
 };

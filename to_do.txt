@@ -1,3 +1,4 @@
+-add marker coordinates to cache and set up pulling from cache before hitting database again
 -fix/update voter status query to include voting history, phone, sex, dob from voterhistories table, add to frontend rendering
 -hook up voter interaction results with database so data corresponds with each voter
 -set up individual user accounts to connect with voter interaction records -> each voter interaction belongs to both a voter and a user, users also have stats of quantity of interaction types that are updated with each interaction
@@ -6,3 +7,5 @@
 -add admin page to query specific voter lists based on GUI filtering and download locally to .txt
 -add admin page for phonebanking from phone records based on GUI filtering
 -handle filter query for 'other' party selection and allow for selection of multiple party affiliations in map/marker filter and query
+-add have knocked/have not knocked as filter options based on interaction history
+

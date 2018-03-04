@@ -44,7 +44,7 @@ var server = app.listen(PORT, function() {
   });
 
 server.on('connection', function(socket) {
-  console.log("A new connection was made by a client.");
+  // console.log("A new connection was made by a client.");
   socket.setTimeout(600 * 1000); 
   socket.keepAliveTimeout = 600*1000;
 })
