@@ -11,6 +11,7 @@ function initMap() {
   var lastLongitude = localStorage.getItem("longitude");
   var lat;
   var lng;
+
   if (lastLatitude == null && lastLongitude == null) {
     lat = 40.7834338;
     lng = -74.2162569;
@@ -32,12 +33,22 @@ function initMap() {
 
   console.log(`Coordinates: ${JSON.stringify(coordinates)}`);
 
-  $.ajax({
-    method: "GET",
-    url: "/api/markers/" + lat + "/" + lng
-  }).done(function(data) {
-    renderMarkers(map, data);
-  });
+  var markerData = localStorage.getItem("markerData");
+  markerData = JSON.parse(markerData);
+
+  if(markerData != null){
+    renderMarkers(map, markerData);
+  }
+  else{
+    $.ajax({
+      method: "GET",
+      url: "/api/markers/" + lat + "/" + lng
+    }).done(function(data) {
+      // console.log(data);
+      localStorage.setItem("markerData", JSON.stringify(data));
+      renderMarkers(map, data);
+    });
+  }
 };
 
 $("#current-location").click(function() {
@@ -93,6 +104,7 @@ $("#current-location").click(function() {
         method: "GET",
         url: "/api/markers/" + latitude + "/" + longitude
       }).done(function(data) {
+        localStorage.setItem("markerData", JSON.stringify(data));
         renderMarkers(map, data);
       });
     });
@@ -141,6 +153,7 @@ $(document).ready(function() {
         method: "GET",
         url: "/api/markers/" + latitude + "/" + longitude
       }).done(function(data) {
+        localStorage.setItem("markerData", JSON.stringify(data));
         renderMarkers(map, data);
       });
     });
@@ -223,6 +236,7 @@ $(document).ready(function() {
           method: "GET",
           url: "/api/filter/" + latitude + "/" + longitude + "/"+ county + "/"+ address + "/"+ city + "/"+ zip + "/"+ party + "/"+ status + "/"+ ward + "/"+ district + "/"+ ld + "/"+ cd + "/"+ freeholder + "/"+ schoolDist + "/"+ regSchoolDist + "/"+ fireDist
         }).done(function(data) {
+          localStorage.setItem("markerData", JSON.stringify(data));
           renderMarkers(map, data);
         });
       });
@@ -259,6 +273,7 @@ $(document).ready(function() {
         method: "GET",
         url: "/api/filter/" + lat + "/" + lng + "/"+ county + "/"+ address + "/"+ city + "/"+ zip + "/"+ party + "/"+ status + "/"+ ward + "/"+ district + "/"+ ld + "/"+ cd + "/"+ freeholder + "/"+ schoolDist + "/"+ regSchoolDist + "/"+ fireDist
       }).done(function(data) {
+        localStorage.setItem("markerData", JSON.stringify(data));
         renderMarkers(map, data);
       });
     }
@@ -266,7 +281,6 @@ $(document).ready(function() {
 });
 
 function renderMarkers(map, data) {
-  console.log(data);
   var markers = [];
   for (var i = 0, length = data.length; i < length; i++) {
     var results = data[i],
