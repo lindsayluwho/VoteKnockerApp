@@ -1,5 +1,3 @@
--add marker coordinates to localStorage and set up pulling from storage before hitting database again
--fix/update voter status query to include voting history, phone, sex, dob from voterhistories table, add to frontend rendering
 -hook up voter interaction results with database so data corresponds with each voter
 -set up individual user accounts to connect with voter interaction records -> each voter interaction belongs to both a voter and a user, users also have stats of quantity of interaction types that are updated with each interaction
 -set up frontend for user stats visibility

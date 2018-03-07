@@ -25,11 +25,12 @@ module.exports = function(app) {
   app.get("/status/:id", function(req, res) {
     var voterId = req.params.id;
     connection.query("SELECT * FROM AlphaVoters WHERE voterId =?", voterId, function(err, result) {
-      connection.query("SELECT VoterHistories.phoneNum, VoterHistories.sex, VoterHistories.dob, VoterHistories.electionDate, VoterHistories.electionName, VoterHistories.electiontype, VoterHistories.electioncategory, VoterHistories.ballottype FROM VoterHistories, AlphaVoters WHERE AlphaVoters.voterid = VoterHistories.voterid AND AlphaVoters.voterId =?", voterId, function(err, results) {
+      connection.query("SELECT phoneNum, sex, dob, electionDate, electionName, electiontype, electioncategory, ballottype FROM VoterHistories WHERE voterId = ?", voterId, function(err, results) {
+        result[0].voterhistory = results;
+        result[0].phone = results[0].phoneNum;
+        result[0].sex = results[0].sex;
+        result[0].dob = results[0].dob;
         console.log(result[0]);
-        console.log(results[0]);
-        result[0].voterhistory = results[0];
-        console.log(result[0].voterhistory);
         res.render("status", result[0]);
       });
     });

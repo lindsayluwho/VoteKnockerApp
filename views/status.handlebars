@@ -41,7 +41,7 @@
     </div>
     <div class="row-col-10">
       <div class="flex-table">
-        <h3><id class="phone">{{voterhistory.phoneNum}}</id></h3><br>
+        <h3><id class="phone">{{phone}}</id></h3><br>
         <h3><id class="email">{{email}}</id></h3>
       </div>
     </div>
@@ -90,8 +90,14 @@
           </tr>
         </thead>
         <tbody>
-        {{#each votingHistory}}
-          {{> votingHistory }}
+        {{#each voterhistory}}
+          <tr>
+            <td class="election-date">{{electionDate}}</td>
+            <td class="election-name">{{electionName}}</td>
+            <td class="election-type">{{electiontype}}</td>
+            <td class="election-category">{{electioncategory}}</td>
+            <td class="ballot-type">{{ballottype}}</td>
+          </tr>
         {{/each}}
         </tbody>
       </table>
