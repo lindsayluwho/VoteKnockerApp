@@ -6,4 +6,5 @@
 -add admin page for phonebanking from phone records based on GUI filtering
 -handle filter query for 'other' party selection and allow for selection of multiple party affiliations in map/marker filter and query
 -add have knocked/have not knocked as filter options based on interaction history
+-add radius slider that brings in more pins per 2, 5, 10 mile radius
 

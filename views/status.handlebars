@@ -42,7 +42,11 @@
     <div class="row-col-10">
       <div class="flex-table">
         <h3><id class="phone">{{phone}}</id></h3><br>
-        <h3><id class="email">{{email}}</id></h3>
+      </div>
+    </div>
+    <div class="row-col-10">
+      <div class="flex-table">
+        <h4><id class="email">{{email}}</id></h4>
       </div>
     </div>
     <div class="row-col-10">
@@ -120,7 +124,13 @@
             </thead>
             <tbody>
             {{#each interactionHistory}}
-              {{> interactionHistory }}
+              <tr>
+                <td class="interaction-date">{{interactionDate}}</td>
+                <td class="knocked">{{knocked}}</td>
+                <td class="literature">{{litDropped}}</td>
+                <td class="petition">{{petitionSigned}}</td>
+                <td class="user">{{UserId}}</td>
+              </tr>
             {{/each}}
             </tbody>
           </table>

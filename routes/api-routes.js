@@ -131,25 +131,35 @@ module.exports = function(app) {
     });
   });
 
-  // // POST route for saving a new interaction
-  // app.post("/api/interactions", function(req, res) {
-  //   var knocked = req.body.knock == 1 ? true : false;
-  //   var litDropped = req.body.handOutLit == 1 ? true : false;
-  //   var petitionSigned = req.body.signPetition == 1 ? true : false;
+  // POST route for saving a new interaction
+  app.post("/api/interactions", function(req, res) {
+    var knocked = req.body.knock;
+    var litDropped = req.body.handOutLit;
+    var petitionSigned = req.body.signPetition;
+    var voterId = req.body.voterId;
+    var email = req.body.email;
+    var phone = req.body.phone;
+    var user = req.body.user;
 
-  //   // create takes an argument of an object describing the item we want to
-  //   // insert into our table. In this case we just we pass in an object with a text
-  //   // and complete property
-  //   db.VoterInteractions.create({
-  //     voterId: req.body.voterId,
-  //     knocked: knocked,
-  //     litDropped: litDropped,
-  //     petitionSigned: petitionSigned,
-  //     email: req.body.email,
-  //     phone: req.body.phone
-  //   }).then(function(dbInteraction) {
-  //     // We have access to the new todo as an argument inside of the callback function
-  //     res.json(dbInteraction);
-  //   });
-  // });
+    var sqlString = "INSERT INTO VoterInteractions SET ?";
+
+    // create takes an argument of an object describing the item we want to
+    // insert into our table. In this case we just we pass in an object with a text
+    // and complete property
+
+    var insertObj = { 
+      knocked: knocked, 
+      litDropped: litDropped, 
+      petitionSigned: petitionSigned, 
+      AlphaVoterId: voterId, 
+      email: email, 
+      phone: phone, 
+      UserId: user 
+    };
+
+    connection.query(sqlString, insertObj, function(err, data) {
+      if (err) {console.log(err)}
+      res.json(data);
+    });
+  });
 }; //module.exports

@@ -25,7 +25,7 @@ function geocodeAddresses() {
 	//grab voters from AlphaVoters
 
 	var query = connection.query(
-		"SELECT voterId, streetNum, zip, streetName, city FROM AlphaVoters WHERE longitude = 'error' AND congDist='7' LIMIT 10000",  
+		"SELECT voterId, streetNum, zip, streetName, city FROM AlphaVoters WHERE longitude = 'error' AND county='camden' LIMIT 50000",  
 		function(err, res){
 			// if (err)
 			// {
@@ -34,6 +34,7 @@ function geocodeAddresses() {
 
 			// var promisesArr = [];
 			var counter = 0;
+			var addCounter = 0;
 
 			//go through each voter record and grab address fields
 			res.forEach(function(voter, index, result){
@@ -48,9 +49,14 @@ function geocodeAddresses() {
 					zip = zip.slice(0, 5);
 				}
 
+				if(street.indexOf('/') > -1){
+					street = street.replace('/', ' ');
+				}
+
 				//concatenate address fields
 				address = number +" "+ street +" "+ city +" "+ state +" "+ zip;
-				console.log(address);
+				addCounter++;
+				console.log(address +" counter: "+addCounter);
 
 				//call geocoder to grab geocoordinates, call addLongLat to set longLat column values
 				dstk.street2coordinates(address, function(err, data){

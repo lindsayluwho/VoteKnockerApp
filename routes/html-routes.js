@@ -26,12 +26,23 @@ module.exports = function(app) {
     var voterId = req.params.id;
     connection.query("SELECT * FROM AlphaVoters WHERE voterId =?", voterId, function(err, result) {
       connection.query("SELECT phoneNum, sex, dob, electionDate, electionName, electiontype, electioncategory, ballottype FROM VoterHistories WHERE voterId = ?", voterId, function(err, results) {
-        result[0].voterhistory = results;
-        result[0].phone = results[0].phoneNum;
-        result[0].sex = results[0].sex;
-        result[0].dob = results[0].dob;
-        console.log(result[0]);
-        res.render("status", result[0]);
+        connection.query("SELECT * FROM VoterInteractions WHERE AlphaVoterId=?", voterId, function(err, results2){
+          result[0].voterhistory = results;
+          result[0].phone = results[0].phoneNum;
+          results2.forEach(function(value, i){
+            if(results2[i].phone != ""){
+              result[0].phone = results2[i].phone;
+            }
+            if(results2[i].email != ""){
+              result[0].email = results2[i].email;
+            }
+          });
+          result[0].sex = results[0].sex;
+          result[0].dob = results[0].dob;
+          result[0].interactionHistory = results2;
+          console.log(result[0]);
+          res.render("status", result[0]);
+        });
       });
     });
   });
@@ -51,7 +62,7 @@ module.exports = function(app) {
   // GET route for getting all of the stats
   app.get("/stats", function(req, res) {
 
-    connection.query("SELECT * FROM voterinteractions", function(err, result) {
+    connection.query("SELECT * FROM VoterInteractions", function(err, result) {
       console.log(result);
       var interaction = {
         interactions: result

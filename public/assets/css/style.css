@@ -184,7 +184,7 @@ button#current-location {
 }
 
 /* loader gif */
-.modal {
+.modal1 {
     display:    none;
     position:   fixed;
     z-index:    1000;
