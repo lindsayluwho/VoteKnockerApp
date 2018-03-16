@@ -206,7 +206,7 @@ body.loading {
 
 /* Anytime the body has the loading class, our
    modal element will be visible */
-body.loading .modal {
+body.loading .modal1 {
     display: block;
 }
 
