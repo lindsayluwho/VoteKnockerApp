@@ -1,4 +1,3 @@
--hook up voter interaction results with database so data corresponds with each voter
 -set up individual user accounts to connect with voter interaction records -> each voter interaction belongs to both a voter and a user, users also have stats of quantity of interaction types that are updated with each interaction
 -set up frontend for user stats visibility
 -add admin page to easily add or remove survey questions from interaction questionnaire with backend hooked up to add columns to table as necessary
