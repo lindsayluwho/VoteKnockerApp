@@ -20,7 +20,14 @@ function initMap() {
     lng = parseFloat(lastLongitude);
   }
 
-  var zoom = 14;
+  var zoom = localStorage.getItem("zoom");
+  if (zoom == null){
+    zoom = 14;
+  }
+  else {
+    zoom = parseInt(zoom);
+  }
+
   var map = new google.maps.Map(document.getElementById('map'), {
     zoom: zoom,
     center: { lat: lat, lng: lng }
@@ -49,6 +56,22 @@ function initMap() {
       renderMarkers(map, data);
     });
   }
+
+  map.addListener('dragend', function() {
+    center = map.getCenter();
+    lat = parseFloat(center.lat());
+    lng = parseFloat(center.lng());
+    console.log(lat, lng);
+    localStorage.setItem("latitude", lat);
+    localStorage.setItem("longitude", lng);
+  });
+
+  map.addListener('zoom_changed', function(){
+    zoom = map.getZoom();
+    console.log(JSON.stringify(zoom));
+    localStorage.setItem("zoom", zoom);
+  });
+    // localStorage.setItem("")
 };
 
 $("#current-location").click(function() {
@@ -74,7 +97,7 @@ $("#current-location").click(function() {
     console.log(`Position: ${JSON.stringify(pos)}`);
 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 15,
+      zoom: 14,
       center: pos
     });
 
@@ -108,6 +131,21 @@ $("#current-location").click(function() {
         renderMarkers(map, data);
       });
     });
+
+    map.addListener('dragend', function() {
+    center = map.getCenter();
+    lat = parseFloat(center.lat());
+    lng = parseFloat(center.lng());
+    console.log(lat, lng);
+    localStorage.setItem("latitude", lat);
+    localStorage.setItem("longitude", lng);
+  });
+
+  map.addListener('zoom_changed', function(){
+    zoom = map.getZoom();
+    console.log(JSON.stringify(zoom));
+    localStorage.setItem("zoom", zoom);
+  });
   });
 });
 
@@ -156,6 +194,21 @@ $(document).ready(function() {
         localStorage.setItem("markerData", JSON.stringify(data));
         renderMarkers(map, data);
       });
+
+      map.addListener('dragend', function() {
+        center = map.getCenter();
+        lat = parseFloat(center.lat());
+        lng = parseFloat(center.lng());
+        console.log(lat, lng);
+        localStorage.setItem("latitude", lat);
+        localStorage.setItem("longitude", lng);
+      });
+
+      map.addListener('zoom_changed', function(){
+        zoom = map.getZoom();
+        console.log(JSON.stringify(zoom));
+        localStorage.setItem("zoom", zoom);
+      });
     });
   });
 
@@ -177,6 +230,8 @@ $(document).ready(function() {
     var fireDist = $("#fire-district").val().trim();
 
 // build location string to center map by filtered address input
+    var state = $("#state").val();
+    if (state == "") state = 'NJ';
     var location = $("#address").val() + $("#city").val() + $("#state").val() + $("#zip").val();
 
     if (county == "") county = 'empty';
@@ -239,6 +294,21 @@ $(document).ready(function() {
           localStorage.setItem("markerData", JSON.stringify(data));
           renderMarkers(map, data);
         });
+
+        map.addListener('dragend', function() {
+          center = map.getCenter();
+          lat = parseFloat(center.lat());
+          lng = parseFloat(center.lng());
+          console.log(lat, lng);
+          localStorage.setItem("latitude", lat);
+          localStorage.setItem("longitude", lng);
+        });
+
+        map.addListener('zoom_changed', function(){
+          zoom = map.getZoom();
+          console.log(JSON.stringify(zoom));
+          localStorage.setItem("zoom", zoom);
+        });
       });
     }
 
@@ -276,13 +346,29 @@ $(document).ready(function() {
         localStorage.setItem("markerData", JSON.stringify(data));
         renderMarkers(map, data);
       });
+
+      map.addListener('dragend', function() {
+        center = map.getCenter();
+        lat = parseFloat(center.lat());
+        lng = parseFloat(center.lng());
+        console.log(lat, lng);
+        localStorage.setItem("latitude", lat);
+        localStorage.setItem("longitude", lng);
+      });
+
+      map.addListener('zoom_changed', function(){
+        zoom = map.getZoom();
+        console.log(JSON.stringify(zoom));
+        localStorage.setItem("zoom", zoom);
+      });
     }
   });
 });
 
 function renderMarkers(map, data) {
   var markers = [];
-  for (var i = 0, length = data.length; i < length; i++) {
+  var length = data.length;
+  for (var i = 0; i < length; i++) {
     var results = data[i],
       latLng = new google.maps.LatLng(results.lat, results.longitude);
 

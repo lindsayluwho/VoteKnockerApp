@@ -1,9 +1,14 @@
+-handle filter query for 'other' party selection and allow for selection of multiple party affiliations in map/marker filter and query
+-remember map zoom and position upon back button/refresh
+-improve Voter Status page load performance (temp tables?)
+-toggle list/map
+-filter for all voters on a given street name
+-add have knocked/have not knocked as filter options based on interaction history
+-add radius slider that brings in more pins per 2, 5, 10 mile radius
+
+
 -set up individual user accounts to connect with voter interaction records -> each voter interaction belongs to both a voter and a user, users also have stats of quantity of interaction types that are updated with each interaction
 -set up frontend for user stats visibility
 -add admin page to easily add or remove survey questions from interaction questionnaire with backend hooked up to add columns to table as necessary
 -add admin page to query specific voter lists based on GUI filtering and download locally to .txt
 -add admin page for phonebanking from phone records based on GUI filtering
--handle filter query for 'other' party selection and allow for selection of multiple party affiliations in map/marker filter and query
--add have knocked/have not knocked as filter options based on interaction history
--add radius slider that brings in more pins per 2, 5, 10 mile radius
-

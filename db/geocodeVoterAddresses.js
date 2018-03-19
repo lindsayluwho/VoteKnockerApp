@@ -25,7 +25,7 @@ function geocodeAddresses() {
 	//grab voters from AlphaVoters
 
 	var query = connection.query(
-		"SELECT voterId, streetNum, zip, streetName, city FROM AlphaVoters WHERE longitude = 'error' AND county='camden' LIMIT 50000",  
+		"SELECT voterId, streetNum, zip, streetName, city FROM AlphaVoters WHERE longitude = 'error' AND county='morris' LIMIT 50000",  
 		function(err, res){
 			// if (err)
 			// {
