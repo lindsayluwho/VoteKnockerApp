@@ -23,6 +23,19 @@ body {
   height: 50px;
 }
 
+#party.btn{
+  padding: 10px;
+  border: 1px solid #868e96;
+  border-radius: .25rem;
+  margin-bottom: 5px;
+}
+
+#dem.btn{
+  padding: 10px;
+  border: 1px solid #868e96;
+  margin-bottom: 5px;
+}
+
 #mainNav {
   position: fixed;
   border-bottom: 0;

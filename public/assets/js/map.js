@@ -1,8 +1,8 @@
 $body = $("body");
 
 $(document).on({
-    ajaxStart: function() { $body.addClass("loading"); },
-    ajaxStop: function() { $body.removeClass("loading"); }    
+  ajaxStart: function() { $body.addClass("loading"); },
+  ajaxStop: function() { $body.removeClass("loading"); }
 });
 
 function initMap() {
@@ -21,10 +21,9 @@ function initMap() {
   }
 
   var zoom = localStorage.getItem("zoom");
-  if (zoom == null){
+  if (zoom == null) {
     zoom = 14;
-  }
-  else {
+  } else {
     zoom = parseInt(zoom);
   }
 
@@ -43,10 +42,9 @@ function initMap() {
   var markerData = localStorage.getItem("markerData");
   markerData = JSON.parse(markerData);
 
-  if(markerData != null){
+  if (markerData != null) {
     renderMarkers(map, markerData);
-  }
-  else{
+  } else {
     $.ajax({
       method: "GET",
       url: "/api/markers/" + lat + "/" + lng
@@ -66,12 +64,12 @@ function initMap() {
     localStorage.setItem("longitude", lng);
   });
 
-  map.addListener('zoom_changed', function(){
+  map.addListener('zoom_changed', function() {
     zoom = map.getZoom();
     console.log(JSON.stringify(zoom));
     localStorage.setItem("zoom", zoom);
   });
-    // localStorage.setItem("")
+  // localStorage.setItem("")
 };
 
 $("#current-location").click(function() {
@@ -133,19 +131,19 @@ $("#current-location").click(function() {
     });
 
     map.addListener('dragend', function() {
-    center = map.getCenter();
-    lat = parseFloat(center.lat());
-    lng = parseFloat(center.lng());
-    console.log(lat, lng);
-    localStorage.setItem("latitude", lat);
-    localStorage.setItem("longitude", lng);
-  });
+      center = map.getCenter();
+      lat = parseFloat(center.lat());
+      lng = parseFloat(center.lng());
+      console.log(lat, lng);
+      localStorage.setItem("latitude", lat);
+      localStorage.setItem("longitude", lng);
+    });
 
-  map.addListener('zoom_changed', function(){
-    zoom = map.getZoom();
-    console.log(JSON.stringify(zoom));
-    localStorage.setItem("zoom", zoom);
-  });
+    map.addListener('zoom_changed', function() {
+      zoom = map.getZoom();
+      console.log(JSON.stringify(zoom));
+      localStorage.setItem("zoom", zoom);
+    });
   });
 });
 
@@ -204,7 +202,7 @@ $(document).ready(function() {
         localStorage.setItem("longitude", lng);
       });
 
-      map.addListener('zoom_changed', function(){
+      map.addListener('zoom_changed', function() {
         zoom = map.getZoom();
         console.log(JSON.stringify(zoom));
         localStorage.setItem("zoom", zoom);
@@ -212,13 +210,16 @@ $(document).ready(function() {
     });
   });
 
+
   $("#filter-menu-submit").on("click", function() {
-// potential filter input values
+    // potential filter input values
     var county = $("#county").val().trim();
     var address = $("#address").val().trim();
     var city = $("#city").val().trim();
     var zip = $("#zip").val().trim();
-    var party = $("#party").val();
+    var party = $('input[type=checkbox]:checked').map(function(_, el) {
+      return $(el).val();
+    }).get();
     var status = $("#status").val();
     var ward = $("#ward").val().trim();
     var district = $("#district").val().trim();
@@ -229,9 +230,9 @@ $(document).ready(function() {
     var regSchoolDist = $("#reg-school-district").val().trim();
     var fireDist = $("#fire-district").val().trim();
 
-// build location string to center map by filtered address input
+    // build location string to center map by filtered address input
     var state = $("#state").val();
-    if (state == "") state = 'NJ';
+    if (state == null) state = 'NJ';
     var location = $("#address").val() + $("#city").val() + $("#state").val() + $("#zip").val();
 
     if (county == "") county = 'empty';
@@ -254,14 +255,15 @@ $(document).ready(function() {
     var lastLatitude = parseFloat(localStorage.getItem("latitude"));
     var lastLongitude = parseFloat(localStorage.getItem("longitude"));
 
-// if address is filtered, set the map center to address
-    if (location != ""){
+
+    // if address is filtered, set the map center to address
+    if (location != "") {
       console.log(location);
 
-      var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + location + "&key=AIzaSyANSUk1NNP2yDUSd94AklPQonusBBP16PI";
+      var geourl = "https://maps.googleapis.com/maps/api/geocode/json?address=" + location + "&key=AIzaSyANSUk1NNP2yDUSd94AklPQonusBBP16PI";
 
       $.ajax({
-        url: url,
+        url: geourl,
         method: "GET"
       }).done(function(response) {
         console.log(response);
@@ -286,10 +288,20 @@ $(document).ready(function() {
 
         console.log(`Coordinates: ${JSON.stringify(coordinates)}`);
 
-// filter on address and remaining query items
+        if (party.length == 2) {
+          var url = "/api/filter/" + latitude + "/" + longitude + "/" + county + "/" + address + "/" + city + "/" + zip + "/" + party[0] + "/" + status + "/" + ward + "/" + district + "/" + ld + "/" + cd + "/" + freeholder + "/" + schoolDist + "/" + regSchoolDist + "/" + fireDist + "/" + party[1];
+
+        } else if (party.length == 1) {
+          var url = "/api/filter/" + latitude + "/" + longitude + "/" + county + "/" + address + "/" + city + "/" + zip + "/" + party[0] + "/" + status + "/" + ward + "/" + district + "/" + ld + "/" + cd + "/" + freeholder + "/" + schoolDist + "/" + regSchoolDist + "/" + fireDist;
+        } else {
+          var url = "/api/filter/" + latitude + "/" + longitude + "/" + county + "/" + address + "/" + city + "/" + zip + "/empty/" + status + "/" + ward + "/" + district + "/" + ld + "/" + cd + "/" + freeholder + "/" + schoolDist + "/" + regSchoolDist + "/" + fireDist;
+        }
+
+
+        // filter on address and remaining query items
         $.ajax({
           method: "GET",
-          url: "/api/filter/" + latitude + "/" + longitude + "/"+ county + "/"+ address + "/"+ city + "/"+ zip + "/"+ party + "/"+ status + "/"+ ward + "/"+ district + "/"+ ld + "/"+ cd + "/"+ freeholder + "/"+ schoolDist + "/"+ regSchoolDist + "/"+ fireDist
+          url: url
         }).done(function(data) {
           localStorage.setItem("markerData", JSON.stringify(data));
           renderMarkers(map, data);
@@ -304,7 +316,7 @@ $(document).ready(function() {
           localStorage.setItem("longitude", lng);
         });
 
-        map.addListener('zoom_changed', function(){
+        map.addListener('zoom_changed', function() {
           zoom = map.getZoom();
           console.log(JSON.stringify(zoom));
           localStorage.setItem("zoom", zoom);
@@ -312,15 +324,14 @@ $(document).ready(function() {
       });
     }
 
-// if address isn't filtered, use last map center or default map center
-    else{
+    // if address isn't filtered, use last map center or default map center
+    else {
       var lat;
       var lng;
       if (lastLatitude == null && lastLongitude == null) {
         lat = 40.7834338;
         lng = -74.2162569;
-      } 
-      else {
+      } else {
         lat = parseFloat(lastLatitude);
         lng = parseFloat(lastLongitude);
       }
@@ -338,10 +349,20 @@ $(document).ready(function() {
 
       console.log(`Coordinates: ${JSON.stringify(coordinates)}`);
 
-// get marker data by filter query
+      if (party.length == 2) {
+        var url = "/api/filter/" + lat + "/" + lng + "/" + county + "/" + address + "/" + city + "/" + zip + "/" + party[0] + "/" + status + "/" + ward + "/" + district + "/" + ld + "/" + cd + "/" + freeholder + "/" + schoolDist + "/" + regSchoolDist + "/" + fireDist + "/" + party[1];
+
+      } else if (party.length == 1) {
+        var url = "/api/filter/" + lat + "/" + lng + "/" + county + "/" + address + "/" + city + "/" + zip + "/" + party[0] + "/" + status + "/" + ward + "/" + district + "/" + ld + "/" + cd + "/" + freeholder + "/" + schoolDist + "/" + regSchoolDist + "/" + fireDist;
+      } else {
+        var url = "/api/filter/" + lat + "/" + lng + "/" + county + "/" + address + "/" + city + "/" + zip + "/empty/" + status + "/" + ward + "/" + district + "/" + ld + "/" + cd + "/" + freeholder + "/" + schoolDist + "/" + regSchoolDist + "/" + fireDist;
+      }
+
+
+      // get marker data by filter query
       $.ajax({
         method: "GET",
-        url: "/api/filter/" + lat + "/" + lng + "/"+ county + "/"+ address + "/"+ city + "/"+ zip + "/"+ party + "/"+ status + "/"+ ward + "/"+ district + "/"+ ld + "/"+ cd + "/"+ freeholder + "/"+ schoolDist + "/"+ regSchoolDist + "/"+ fireDist
+        url: url
       }).done(function(data) {
         localStorage.setItem("markerData", JSON.stringify(data));
         renderMarkers(map, data);
@@ -356,7 +377,7 @@ $(document).ready(function() {
         localStorage.setItem("longitude", lng);
       });
 
-      map.addListener('zoom_changed', function(){
+      map.addListener('zoom_changed', function() {
         zoom = map.getZoom();
         console.log(JSON.stringify(zoom));
         localStorage.setItem("zoom", zoom);

@@ -31,7 +31,7 @@ module.exports = function(app) {
           result[0].phone = results[0].phoneNum;
           results2.forEach(function(value, i){
             if(results2[i].phone != ""){
-              result[0].phone = results2[i].phone;
+              result[0].phone = results2[i].phoneNum;
             }
             if(results2[i].email != ""){
               result[0].email = results2[i].email;
