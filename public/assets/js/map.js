@@ -291,11 +291,15 @@ $(document).ready(function() {
         if (party.length == 2) {
           var url = "/api/filter/" + latitude + "/" + longitude + "/" + county + "/" + address + "/" + city + "/" + zip + "/" + party[0] + "/" + status + "/" + ward + "/" + district + "/" + ld + "/" + cd + "/" + freeholder + "/" + schoolDist + "/" + regSchoolDist + "/" + fireDist + "/" + party[1];
 
+
         } else if (party.length == 1) {
           var url = "/api/filter/" + latitude + "/" + longitude + "/" + county + "/" + address + "/" + city + "/" + zip + "/" + party[0] + "/" + status + "/" + ward + "/" + district + "/" + ld + "/" + cd + "/" + freeholder + "/" + schoolDist + "/" + regSchoolDist + "/" + fireDist;
+
         } else {
           var url = "/api/filter/" + latitude + "/" + longitude + "/" + county + "/" + address + "/" + city + "/" + zip + "/empty/" + status + "/" + ward + "/" + district + "/" + ld + "/" + cd + "/" + freeholder + "/" + schoolDist + "/" + regSchoolDist + "/" + fireDist;
+
         }
+        console.log(url);
 
 
         // filter on address and remaining query items
@@ -357,6 +361,8 @@ $(document).ready(function() {
       } else {
         var url = "/api/filter/" + lat + "/" + lng + "/" + county + "/" + address + "/" + city + "/" + zip + "/empty/" + status + "/" + ward + "/" + district + "/" + ld + "/" + cd + "/" + freeholder + "/" + schoolDist + "/" + regSchoolDist + "/" + fireDist;
       }
+
+      console.log(url);
 
 
       // get marker data by filter query

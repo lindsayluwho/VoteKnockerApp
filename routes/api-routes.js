@@ -64,7 +64,7 @@ module.exports = function(app) {
 
 
   // route to get filtered markers based on filter query
-  app.get("/api/filter/:lat/:lng/:county/:address/:city/:zip/:party/:status/:ward/:district/:ld/:cd/:freeholder/:schoolDist/:regSchoolDist/:fireDist/?:party2", function(req, res) {
+  app.get("/api/filter/:lat/:lng/:county/:address/:city/:zip/:party/:status/:ward/:district/:ld/:cd/:freeholder/:schoolDist/:regSchoolDist/:fireDist/:party2?", function(req, res) {
 
     var lat = req.params.lat;
     var lng = req.params.lng;
@@ -121,6 +121,7 @@ module.exports = function(app) {
     }
 
     // console.log(`Query: ${sqlQuery}`);
+    console.log(`Params: ${JSON.stringify(req.params)}\n\nQuery:${sqlQuery}\n\nEscaped values: ${escapeArray}`);
 
     connection.query(sqlQuery, escapeArray, function(err, data) {
       if (err) {
