@@ -24,8 +24,11 @@ module.exports = function(app) {
     var minlng = parseFloat(req.params.lng) - .02;
     console.log(`Min Lat: ${minlat} \n Max Lat: ${maxlat} \n Min Lng: ${minlng} \n Max Lng: ${maxlng}`)
 
-    connection.query("SELECT voterId, firstName, lastName, party, lat, longitude, address, city, zip FROM AlphaVoters WHERE longitude BETWEEN ? AND ? AND lat BETWEEN ? AND ?", [minlng, maxlng, minlat, maxlat], function(err, data) {
+    var tempTable="DROP TEMPORARY TABLE IF EXISTS TempAlphaVoters;CREATE TEMPORARY TABLE TempAlphaVoters LIKE AlphaVoters;INSERT INTO TempAlphaVoters SELECT * FROM AlphaVoters WHERE longitude BETWEEN ? AND ? AND lat BETWEEN ? AND ?;SELECT * FROM TempAlphaVoters;DROP TEMPORARY TABLE IF EXISTS TempVoterHistories;CREATE TEMPORARY TABLE TempVoterHistories LIKE VoterHistories;INSERT INTO TempVoterHistories SELECT VoterHistories.voterId, phoneNum, sex, dob, electionDate, electionName, electiontype, electioncategory, ballottype FROM VoterHistories, TempAlphaVoters WHERE VoterHistories.voterId = TempAlphaVoters.voterId;"  
+    // ; ${tempVHTable}; ${query};
+    connection.query(tempTable, [maxlng, minlng, maxlat, minlat], function(err, results) {
       if (err) {
+        console.log(err.index);
         console.log(err);
       }
       console.log(`Data retrieved, returning to client.`);
@@ -34,14 +37,14 @@ module.exports = function(app) {
       // distance = 1;
 
       // weed out all results that turn out to be too far
-      data.forEach((value, index) => {
-        var resultDistance = distanceFunc(lat, lng, data[index].lat, data[index].longitude);
-        if (resultDistance > 1) {
-          data.splice(index, index + 1);
-        }
-        // console.log(resultDistance);
-      });
-      res.json(data);
+      // data.forEach((value, index) => {
+      //   var resultDistance = distanceFunc(lat, lng, data[index].lat, data[index].longitude);
+      //   if (resultDistance > 1) {
+      //     data.splice(index, index + 1);
+      //   }
+      //   // console.log(resultDistance);
+      // });
+      res.json(results);
     });
   });
 
@@ -109,13 +112,13 @@ module.exports = function(app) {
 
     if (!party2) {
 
-    var sqlQuery = "SELECT voterId, firstName, lastName, party, lat, longitude, address, city, zip FROM AlphaVoters WHERE county LIKE ? AND address LIKE ? AND zip LIKE ? AND party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? AND lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ?;";
+    var sqlQuery = "DROP TEMPORARY TABLE IF EXISTS TempAlphaVoters;CREATE TEMPORARY TABLE TempAlphaVoters LIKE AlphaVoters;INSERT INTO TempAlphaVoters SELECT * FROM AlphaVoters WHERE county LIKE ? AND address LIKE ? AND zip LIKE ? AND party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? AND lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ?;SELECT * FROM TempAlphaVoters;DROP TEMPORARY TABLE IF EXISTS TempVoterHistories;CREATE TEMPORARY TABLE TempVoterHistories LIKE VoterHistories;INSERT INTO TempVoterHistories SELECT VoterHistories.voterId, phoneNum, sex, dob, electionDate, electionName, electiontype, electioncategory, ballottype FROM VoterHistories, TempAlphaVoters WHERE VoterHistories.voterId = TempAlphaVoters.voterId;";
 
     var escapeArray = [county, address, zip, party, status, ward, district, ld, cd, freeholder, schoolDist, regSchoolDist, fireDist, city, minlat, maxlat, minlng, maxlng];
     }
 
     else {
-      var sqlQuery = "SELECT voterId, firstName, lastName, party, lat, longitude, address, city, zip FROM AlphaVoters WHERE county LIKE ? AND address LIKE ? AND zip LIKE ? AND party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? AND lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ? OR party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? AND lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ?;";
+      var sqlQuery = "DROP TEMPORARY TABLE IF EXISTS TempAlphaVoters;CREATE TEMPORARY TABLE TempAlphaVoters LIKE AlphaVoters;INSERT INTO TempAlphaVoters SELECT * FROM AlphaVoters WHERE county LIKE ? AND address LIKE ? AND zip LIKE ? AND party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? AND lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ? OR party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? AND lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ?;SELECT * FROM TempAlphaVoters;DROP TEMPORARY TABLE IF EXISTS TempVoterHistories;CREATE TEMPORARY TABLE TempVoterHistories LIKE VoterHistories;INSERT INTO TempVoterHistories SELECT VoterHistories.voterId, phoneNum, sex, dob, electionDate, electionName, electiontype, electioncategory, ballottype FROM VoterHistories, TempAlphaVoters WHERE VoterHistories.voterId = TempAlphaVoters.voterId;";
 
     var escapeArray = [county, address, zip, party, status, ward, district, ld, cd, freeholder, schoolDist, regSchoolDist, fireDist, city, minlat, maxlat, minlng, maxlng, party2, status, ward, district, ld, cd, freeholder, schoolDist, regSchoolDist, fireDist, city, minlat, maxlat, minlng, maxlng];
     }
@@ -173,6 +176,25 @@ module.exports = function(app) {
     connection.query(sqlString, insertObj, function(err, data) {
       if (err) {console.log(err)}
       res.json(data);
+    });
+  });
+
+  app.get("/api/voterSearch/:firstName/:lastName", function(req, res){
+    var firstName = req.params.firstName;
+    var lastName = req.params.lastName;
+    if (firstName=="") firstName = '%';
+    console.log(`Voter search: ${firstName} ${lastName}`);
+
+    var sqlString = "SELECT firstName, lastName, address, city, zip, party, voterId FROM AlphaVoters WHERE firstName LIKE ? AND lastName LIKE ?";
+
+    var escapeArray = [firstName, lastName];
+
+    connection.query(sqlString, escapeArray, function(err, data){
+      var hbsObj = {
+        voter: data
+      }
+      console.log(JSON.stringify(hbsObj.voter));
+      res.json(hbsObj.voter);
     });
   });
 }; //module.exports

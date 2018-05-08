@@ -24,28 +24,27 @@ module.exports = function(app) {
 
   app.get("/status/:id", function(req, res) {
     var voterId = req.params.id;
-    connection.query("SELECT * FROM AlphaVoters WHERE voterId =?", voterId, function(err, result) {
-      connection.query("SELECT phoneNum, sex, dob, electionDate, electionName, electiontype, electioncategory, ballottype FROM VoterHistories WHERE voterId = ?", voterId, function(err, results) {
-        connection.query("SELECT * FROM VoterInteractions WHERE AlphaVoterId=?", voterId, function(err, results2){
+    var query1 = "SELECT * FROM TempAlphaVoters WHERE voterId ='" + voterId + "'";
+    var query2 = "SELECT phoneNum, sex, dob, electionDate, electionName, electiontype, electioncategory, ballottype FROM TempVoterHistories WHERE voterId ='" + voterId + "'";
+    var query3 = "SELECT * FROM VoterInteractions WHERE AlphaVoterId='" + voterId + "'";
+    connection.query(`${query1}; ${query2}; ${query3}`, function(err, result) {
           result[0].voterhistory = results;
           result[0].phone = results[0].phoneNum;
-          results2.forEach(function(value, i){
+          result[1].forEach(function(value, i){
             if(results2[i].phone != ""){
-              result[0].phone = results2[i].phoneNum;
+              result[0].phone = result[1].phoneNum;
             }
             if(results2[i].email != ""){
-              result[0].email = results2[i].email;
+              result[0].email = result[1].email;
             }
           });
-          result[0].sex = results[0].sex;
-          result[0].dob = results[0].dob;
-          result[0].interactionHistory = results2;
+          result[0].sex = result[1].sex;
+          result[0].dob = result[1].dob;
+          result[0].interactionHistory = result[2];
           console.log(result[0]);
           res.render("status", result[0]);
         });
       });
-    });
-  });
 
   app.get("/userStats", function(req, res) {
     res.render("userStats");
@@ -70,6 +69,10 @@ module.exports = function(app) {
       res.render("userStats", interaction);
     });
 
+  });
+
+  app.get("/voterSearch", function(req,res) {
+    res.render("voter_search");
   });
 
 

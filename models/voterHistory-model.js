@@ -28,4 +28,5 @@ module.exports = function (sequelize, DataTypes) {
 // sex   
 
 
+SELECT voterId, firstName, lastName, address, municipality, zip, party FROM AlphaVoters WHERE congDist="7" AND NOT EXISTS (SELECT * FROM VoterHistories WHERE AlphaVoters.voterId = VoterHistories.voterId AND VoterHistories.electionDate="06/06/2017") OR congDist="7" AND NOT EXISTS (SELECT * FROM VoterHistories WHERE AlphaVoters.voterId = VoterHistories.voterId AND VoterHistories.electionDate="06/07/2016") ORDER BY lastName;
 

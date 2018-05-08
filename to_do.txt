@@ -1,5 +1,3 @@
--handle filter query for 'other' party selection and allow for selection of multiple party affiliations in map/marker filter and query
--remember map zoom and position upon back button/refresh
 -improve Voter Status page load performance (temp tables?)
 -toggle list/map
 -filter for all voters on a given street name
@@ -12,3 +10,5 @@
 -add admin page to easily add or remove survey questions from interaction questionnaire with backend hooked up to add columns to table as necessary
 -add admin page to query specific voter lists based on GUI filtering and download locally to .txt
 -add admin page for phonebanking from phone records based on GUI filtering
+
+-REACT! 

@@ -1,3 +1,10 @@
+#vote-search{
+  margin: 2rem;
+}
+
+#voter-search{
+  margin: 2rem;
+}
 #map {
   height: 100%;
 }
