@@ -50,7 +50,7 @@ function initMap() {
       url: "/api/markers/" + lat + "/" + lng
     }).done(function(data) {
       // console.log(data);
-      localStorage.setItem("markerData", JSON.stringify(data));
+      // localStorage.setItem("markerData", JSON.stringify(data));
       renderMarkers(map, data);
     });
   }
@@ -125,7 +125,7 @@ $("#current-location").click(function() {
         method: "GET",
         url: "/api/markers/" + latitude + "/" + longitude
       }).done(function(data) {
-        localStorage.setItem("markerData", JSON.stringify(data));
+        // localStorage.setItem("markerData", JSON.stringify(data));
         renderMarkers(map, data);
       });
     });
@@ -189,7 +189,7 @@ $(document).ready(function() {
         method: "GET",
         url: "/api/markers/" + latitude + "/" + longitude
       }).done(function(data) {
-        localStorage.setItem("markerData", JSON.stringify(data));
+        // localStorage.setItem("markerData", JSON.stringify(data));
         renderMarkers(map, data);
       });
 
@@ -307,7 +307,7 @@ $(document).ready(function() {
           method: "GET",
           url: url
         }).done(function(data) {
-          localStorage.setItem("markerData", JSON.stringify(data));
+          // localStorage.setItem("markerData", JSON.stringify(data));
           renderMarkers(map, data);
         });
 
