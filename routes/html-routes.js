@@ -24,10 +24,8 @@ module.exports = function(app) {
 
   app.get("/status/:id", function(req, res) {
     var voterId = req.params.id;
-    var query1 = "SELECT * FROM TempAlphaVoters WHERE voterId ='" + voterId + "'";
-    var query2 = "SELECT phoneNum, sex, dob, electionDate, electionName, electiontype, electioncategory, ballottype FROM VoterHistories WHERE voterId ='" + voterId + "'";
-    var query3 = "SELECT * FROM VoterInteractions WHERE AlphaVoterId='" + voterId + "'";
-    connection.query(`${query1}; ${query2}; ${query3}`, function(err, result) {
+    var query1 = "SELECT * FROM TempAlphaVoters WHERE voterId =?;SELECT phoneNum, sex, dob, electionDate, electionName, electiontype, electioncategory, ballottype FROM VoterHistories WHERE voterId =?;SELECT * FROM VoterInteractions WHERE AlphaVoterId=?;"
+    connection.query(query1, [voterId, voterId, voterId], function(err, result) {
           result[0].voterhistory = result[1];
           result[0].phone = result[0].phoneNum;
           result[1].forEach(function(value, i){
