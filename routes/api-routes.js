@@ -124,7 +124,7 @@ module.exports = function(app) {
     else {
       var sqlQuery = "DROP TEMPORARY TABLE IF EXISTS TempAlphaVoters;CREATE TEMPORARY TABLE TempAlphaVoters LIKE AlphaVoters;INSERT INTO TempAlphaVoters SELECT * FROM AlphaVoters WHERE county LIKE ? AND address LIKE ? AND zip LIKE ? AND party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? AND lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ? OR party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? AND lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ?;SELECT voterId, firstName, lastName, lat, longitude, party, address, city, zip FROM TempAlphaVoters;";
 
-      
+
 
       // DROP TEMPORARY TABLE IF EXISTS TempVoterHistories;CREATE TEMPORARY TABLE TempVoterHistories LIKE VoterHistories;INSERT INTO TempVoterHistories SELECT VoterHistories.voterId, phoneNum, sex, dob, electionDate, electionName, electiontype, electioncategory, ballottype FROM VoterHistories, TempAlphaVoters WHERE VoterHistories.voterId = TempAlphaVoters.voterId;
 
