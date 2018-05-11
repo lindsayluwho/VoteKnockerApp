@@ -3,7 +3,7 @@ var mysql = require("mysql");
 
 
 var connection = mysql.createConnection({
-    port: "3306",
+    port: "8889",
     host: "encryptedvkdb.cm4fvld7rmid.us-west-1.rds.amazonaws.com",
     user: "root",
     password: "9Letters!",
