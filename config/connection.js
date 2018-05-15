@@ -8,7 +8,8 @@ var connection = mysql.createConnection({
     user: "root",
     password: "9Letters!",
     database: "voteknockerdb",
-    multipleStatements: true
+    multipleStatements: true,
+    timeout: 60000
 });
 
 
