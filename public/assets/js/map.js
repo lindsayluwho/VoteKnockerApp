@@ -39,21 +39,21 @@ function initMap() {
 
   console.log(`Coordinates: ${JSON.stringify(coordinates)}`);
 
-  var markerData = localStorage.getItem("markerData");
-  markerData = JSON.parse(markerData);
+  // var markerData = localStorage.getItem("markerData");
+  // markerData = JSON.parse(markerData);
 
-  if (markerData != null) {
-    renderMarkers(map, markerData);
-  } else {
-    $.ajax({
-      method: "GET",
-      url: "/api/markers/" + lat + "/" + lng
-    }).done(function(data) {
-      // console.log(data);
-      // localStorage.setItem("markerData", JSON.stringify(data));
-      renderMarkers(map, data);
-    });
-  }
+  // if (markerData != null) {
+  //   renderMarkers(map, markerData);
+  // } else {
+  $.ajax({
+    method: "GET",
+    url: "/api/markers/" + lat + "/" + lng
+  }).done(function(data) {
+    // console.log(data);
+    // localStorage.setItem("markerData", JSON.stringify(data));
+    renderMarkers(map, data);
+  });
+  // }
 
   map.addListener('dragend', function() {
     center = map.getCenter();
@@ -117,17 +117,19 @@ $("#current-location").click(function() {
         lng: longitude
       };
 
-      var markers = [];
-
       console.log(`Coordinates: ${JSON.stringify(coordinates)}`);
 
-      $.ajax({
-        method: "GET",
-        url: "/api/markers/" + latitude + "/" + longitude
-      }).done(function(data) {
-        // localStorage.setItem("markerData", JSON.stringify(data));
-        renderMarkers(map, data);
-      });
+    });
+
+    var markers = [];
+
+    $.ajax({
+      method: "GET",
+      url: "/api/markers/" + latitude + "/" + longitude
+    }).done(function(data) {
+      // localStorage.setItem("markerData", JSON.stringify(data));
+      console.log("Render markers");
+      renderMarkers(map, data);
     });
 
     map.addListener('dragend', function() {
@@ -370,7 +372,7 @@ $(document).ready(function() {
         method: "GET",
         url: url
       }).done(function(data) {
-        localStorage.setItem("markerData", JSON.stringify(data));
+        // localStorage.setItem("markerData", JSON.stringify(data));
         renderMarkers(map, data);
       });
 

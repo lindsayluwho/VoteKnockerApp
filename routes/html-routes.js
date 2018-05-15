@@ -24,23 +24,23 @@ module.exports = function(app) {
 
   app.get("/status/:id", function(req, res) {
     var voterId = req.params.id;
-    var query1 = "SELECT * FROM TempAlphaVoters WHERE voterId =?;SELECT phoneNum, sex, dob, electionDate, electionName, electiontype, electioncategory, ballottype FROM VoterHistories WHERE voterId =?;SELECT * FROM VoterInteractions WHERE AlphaVoterId=?;"
+    var query1 = "SELECT * FROM TempAlphaVoters7 WHERE voterId =?;SELECT * FROM TempVoterHistories7 WHERE voterId =?;SELECT * FROM VoterInteractions WHERE AlphaVoterId=?;"
     connection.query(query1, [voterId, voterId, voterId], function(err, result) {
-          result[0].voterhistory = result[1];
-          result[0].phone = result[0].phoneNum;
+          result[0][0].voterhistory = result[1];
+          result[0][0].phone = result[2].phone;
           result[1].forEach(function(value, i){
-            if(result[i].phone != ""){
-              result[0].phone = result[1].phoneNum;
+            if(result[0][0].phone != ""){
+              result[0][0].phone = result[1][i].phoneNum;
             }
-            if(result[i].email != ""){
-              result[0].email = result[1].email;
+            if(result[0][0].email != ""){
+              result[0][0].email = result[1][i].email;
             }
           });
-          result[0].sex = result[1].sex;
-          result[0].dob = result[1].dob;
-          result[0].interactionHistory = result[2];
-          console.log(result[0]);
-          res.render("status", result[0]);
+          result[0][0].sex = result[1][0].sex;
+          result[0][0].dob = result[1][0].dob;
+          result[0][0].interactionHistory = result[2];
+          console.log(result[0][0]);
+          res.render("status", result[0][0]);
         });
       });
 
@@ -51,7 +51,7 @@ module.exports = function(app) {
 
   app.get("/interactions/:id", function(req, res) {
     var voterId = req.params.id;
-    connection.query("SELECT * FROM AlphaVoters WHERE voterId =?", voterId, function(err, result) {
+    connection.query("SELECT * FROM AlphaVoters7 WHERE voterId =?", voterId, function(err, result) {
       res.render("interactions", result[0]);
     });
   });

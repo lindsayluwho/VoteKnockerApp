@@ -24,11 +24,11 @@ module.exports = function(app) {
     var minlng = parseFloat(req.params.lng) - .02;
     console.log(`Min Lat: ${minlat} \n Max Lat: ${maxlat} \n Min Lng: ${minlng} \n Max Lng: ${maxlng}`)
 
-    var tempTable="DROP TEMPORARY TABLE IF EXISTS TempAlphaVoters;CREATE TEMPORARY TABLE TempAlphaVoters LIKE AlphaVoters;INSERT INTO TempAlphaVoters SELECT * FROM AlphaVoters WHERE longitude BETWEEN ? AND ? AND lat BETWEEN ? AND ?;SELECT voterId, firstName, lastName, lat, longitude, party, address, city, zip FROM TempAlphaVoters;"
+    var tempTable="DROP TEMPORARY TABLE IF EXISTS TempAlphaVoters7;CREATE TEMPORARY TABLE TempAlphaVoters7 LIKE AlphaVoters7;INSERT INTO TempAlphaVoters7 SELECT * FROM AlphaVoters7 WHERE longitude BETWEEN ? AND ? AND lat BETWEEN ? AND ?;SELECT voterId, firstName, lastName, lat, longitude, party, address, city, zip FROM TempAlphaVoters7;DROP TEMPORARY TABLE IF EXISTS TempVoterHistories7;CREATE TEMPORARY TABLE TempVoterHistories7 LIKE VoterHistories7;INSERT INTO TempVoterHistories7 SELECT VoterHistories7.voterId, electionDate, electionName, electionType, electionCategory, ballotType, DOB, phoneNum, sex FROM VoterHistories7, TempAlphaVoters7 WHERE VoterHistories7.voterId = TempAlphaVoters7.voterId;"
 
-    // DROP TEMPORARY TABLE IF EXISTS TempVoterHistories;CREATE TEMPORARY TABLE TempVoterHistories LIKE VoterHistories;INSERT INTO TempVoterHistories SELECT VoterHistories.voterId, phoneNum, sex, dob, electionDate, electionName, electiontype, electioncategory, ballottype FROM VoterHistories, TempAlphaVoters WHERE VoterHistories.voterId = TempAlphaVoters.voterId;  
 
-    connection.query(tempTable, [maxlng, minlng, maxlat, minlat], function(err, results) {
+
+    connection.query(tempTable, [minlng, maxlng, minlat, maxlat], function(err, results) {
       if (err) {
         console.log(err.index);
         console.log(err);
@@ -114,19 +114,19 @@ module.exports = function(app) {
 
     if (!party2) {
 
-    var sqlQuery = "DROP TEMPORARY TABLE IF EXISTS TempAlphaVoters;CREATE TEMPORARY TABLE TempAlphaVoters LIKE AlphaVoters;INSERT INTO TempAlphaVoters SELECT * FROM AlphaVoters WHERE county LIKE ? AND address LIKE ? AND zip LIKE ? AND party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? AND lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ?;SELECT voterId, firstName, lastName, lat, longitude, party, address, city, zip FROM TempAlphaVoters;";
+    var sqlQuery = "DROP TEMPORARY TABLE IF EXISTS TempAlphaVoters7;CREATE TEMPORARY TABLE TempAlphaVoters7 LIKE AlphaVoters7;INSERT INTO TempAlphaVoters7 SELECT * FROM AlphaVoters7 WHERE county LIKE ? AND address LIKE ? AND zip LIKE ? AND party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? AND lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ?;SELECT voterId, firstName, lastName, lat, longitude, party, address, city, zip FROM TempAlphaVoters7;DROP TEMPORARY TABLE IF EXISTS TempVoterHistories7;CREATE TEMPORARY TABLE TempVoterHistories7 LIKE VoterHistories7;INSERT INTO TempVoterHistories7 SELECT VoterHistories7.voterId, electionDate, electionName, electionType, electionCategory, ballotType, DOB, phoneNum, sex FROM VoterHistories7, TempAlphaVoters7 WHERE VoterHistories7.voterId = TempAlphaVoters7.voterId;";
 
-    // DROP TEMPORARY TABLE IF EXISTS TempVoterHistories;CREATE TEMPORARY TABLE TempVoterHistories LIKE VoterHistories;INSERT INTO TempVoterHistories SELECT VoterHistories.voterId, phoneNum, sex, dob, electionDate, electionName, electiontype, electioncategory, ballottype FROM VoterHistories, TempAlphaVoters WHERE VoterHistories.voterId = TempAlphaVoters.voterId;
+    // DROP TEMPORARY TABLE IF EXISTS TempVoterHistories7;CREATE TEMPORARY TABLE TempVoterHistories7 LIKE VoterHistories7;INSERT INTO TempVoterHistories7 SELECT VoterHistories7.voterId, phoneNum, sex, dob, electionDate, electionName, electiontype, electioncategory, ballottype FROM VoterHistories7, TempAlphaVoters7 WHERE VoterHistories7.voterId = TempAlphaVoters7.voterId;
 
     var escapeArray = [county, address, zip, party, status, ward, district, ld, cd, freeholder, schoolDist, regSchoolDist, fireDist, city, minlat, maxlat, minlng, maxlng];
     }
 
     else {
-      var sqlQuery = "DROP TEMPORARY TABLE IF EXISTS TempAlphaVoters;CREATE TEMPORARY TABLE TempAlphaVoters LIKE AlphaVoters;INSERT INTO TempAlphaVoters SELECT * FROM AlphaVoters WHERE county LIKE ? AND address LIKE ? AND zip LIKE ? AND party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? AND lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ? OR party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? AND lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ?;SELECT voterId, firstName, lastName, lat, longitude, party, address, city, zip FROM TempAlphaVoters;";
+      var sqlQuery = "DROP TEMPORARY TABLE IF EXISTS TempAlphaVoters7;CREATE TEMPORARY TABLE TempAlphaVoters7 LIKE AlphaVoters7;INSERT INTO TempAlphaVoters7 SELECT * FROM AlphaVoters7 WHERE county LIKE ? AND address LIKE ? AND zip LIKE ? AND party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? AND lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ? OR party LIKE ? AND status LIKE ? AND ward LIKE ? AND district LIKE ? and legDist LIKE ? and congDist LIKE ? AND freeholder LIKE ? AND schoolDist LIKE ? AND regionalSchool LIKE ? AND fireDist LIKE ? AND city LIKE ? AND lat BETWEEN ? AND ? AND longitude BETWEEN ? AND ?;SELECT voterId, firstName, lastName, lat, longitude, party, address, city, zip FROM TempAlphaVoters7;DROP TEMPORARY TABLE IF EXISTS TempVoterHistories7;CREATE TEMPOARY TABLE TempVoterHistories7 LIKE VoterHistories7;INSERT INTO TempVoterHistories7 SELECT VoterHistories7.voterId, electionDate, electionName, electionType, electionCategory, ballotType, DOB, phoneNum, sex FROM VoterHistories7, TempAlphaVoters7 WHERE VoterHistories7.voterId = TempAlphaVoters7.voterId;";
 
 
 
-      // DROP TEMPORARY TABLE IF EXISTS TempVoterHistories;CREATE TEMPORARY TABLE TempVoterHistories LIKE VoterHistories;INSERT INTO TempVoterHistories SELECT VoterHistories.voterId, phoneNum, sex, dob, electionDate, electionName, electiontype, electioncategory, ballottype FROM VoterHistories, TempAlphaVoters WHERE VoterHistories.voterId = TempAlphaVoters.voterId;
+      // DROP TEMPORARY TABLE IF EXISTS TempVoterHistories7;CREATE TEMPORARY TABLE TempVoterHistories7 LIKE VoterHistories7;INSERT INTO TempVoterHistories7 SELECT VoterHistories7.voterId, phoneNum, sex, dob, electionDate, electionName, electiontype, electioncategory, ballottype FROM VoterHistories7, TempAlphaVoters7 WHERE VoterHistories7.voterId = TempAlphaVoters7.voterId;
 
     var escapeArray = [county, address, zip, party, status, ward, district, ld, cd, freeholder, schoolDist, regSchoolDist, fireDist, city, minlat, maxlat, minlng, maxlng, party2, status, ward, district, ld, cd, freeholder, schoolDist, regSchoolDist, fireDist, city, minlat, maxlat, minlng, maxlng];
     }
@@ -192,7 +192,7 @@ module.exports = function(app) {
     if (firstName=="") firstName = '%';
     console.log(`Voter search: ${firstName} ${lastName}`);
 
-    var sqlString = "SELECT firstName, lastName, address, city, zip, party, voterId FROM AlphaVoters WHERE firstName LIKE ? AND lastName LIKE ?";
+    var sqlString = "SELECT firstName, lastName, address, city, zip, party, voterId FROM AlphaVoters7 WHERE firstName LIKE ? AND lastName LIKE ?";
 
     var escapeArray = [firstName, lastName];
 

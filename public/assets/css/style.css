@@ -77,14 +77,16 @@ body {
   overflow: hidden;
 }
 
-.btn-expand-collapse {
+.btn-expand-collapse, .btn-expand-collapse:focus {
   position: absolute;
   display: block;
   bottom: 50%;
   right: 0px;
   width: 24px;
   height: 24px;
-  color: grey;
+  color: white;
+  text-shadow: 1px 1px 1px grey;
+  text-decoration: none;
   font-size: 24px;
   font-weight: 900;
   text-align: center;
@@ -130,10 +132,10 @@ body {
 }
 
 
-.btn-expand-collapse:hover,
-.btn-expand-collapse:focus {
-  color: white;
-  text-shadow: 1px 1px 1px grey;  
+.btn-expand-collapse:hover{
+  color: grey;
+  text-shadow: 1px 1px 1px darkgrey;  
+  text-decoration: none;
 }
 
 .btn-expand-collapse:active {
